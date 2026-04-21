@@ -1,0 +1,100 @@
+// All UI text in both languages
+export const translations = {
+  en: {
+    // Header
+    logoTitle: "Election Assistant",
+    logoSub: "YOUR VOTING GUIDE",
+    explainSimply: "Explain Simply",
+    simpleOn: "Simple On ✨",
+    langLabel: "हिंदी",
+
+    // Hero
+    heroBadge: "Non-Partisan • Educational • Free",
+    heroTitle1: "Your Path to the",
+    heroTitle2: "Polls",
+    heroSubtitle: "A friendly, step-by-step guide to help you navigate voter registration, election timelines, and voting day — with confidence.",
+
+    // Questions
+    countryQ: "Which country are you voting in?",
+    india: "🇮🇳 India",
+    usa: "🇺🇸 United States",
+    other: "🌍 Other Country",
+    regQ: "Have you registered as a voter yet?",
+    regYes: "✅ Yes, I am registered",
+    regNo: "📝 No, not yet",
+    regUnsure: "🤔 I'm not sure",
+    changeCountry: "Change Country",
+    startOver: "Start Over",
+
+    // Sections
+    regRoadmap: "Registration Roadmap",
+    votingPrep: "Voting Day Prep",
+    beforeVoting: "📋 Before Voting Day",
+    onVotingDay: "🗳️ On Voting Day",
+    proTips: "💡 Pro Tips",
+    eciForms: "Important ECI Forms",
+    resources: "Resources & Context",
+    resourcesSub: "Understand the bigger picture of how elections work.",
+    timeline: "Election Timeline",
+    mythFact: "Myth vs Fact",
+    myth: "Myth",
+    fact: "Fact",
+
+    // Footer
+    footerCopy: "© 2026 Election Assistant",
+    footerNon: "Non-Partisan",
+    footerEdu: "Educational Only",
+    footerVerify: "Always verify with ECI / local sources",
+
+    // Status check
+    backHome: "Start Over",
+  },
+  hi: {
+    // Header
+    logoTitle: "चुनाव सहायक",
+    logoSub: "आपकी मतदान गाइड",
+    explainSimply: "आसान भाषा",
+    simpleOn: "आसान मोड ✨",
+    langLabel: "English",
+
+    // Hero
+    heroBadge: "निष्पक्ष • शैक्षणिक • मुफ़्त",
+    heroTitle1: "आपका रास्ता",
+    heroTitle2: "मतदान तक",
+    heroSubtitle: "मतदाता पंजीकरण, चुनाव समयसीमा और मतदान दिवस को समझने के लिए एक दोस्ताना, चरण-दर-चरण मार्गदर्शिका।",
+
+    // Questions
+    countryQ: "आप किस देश में मतदान कर रहे हैं?",
+    india: "🇮🇳 भारत",
+    usa: "🇺🇸 संयुक्त राज्य अमेरिका",
+    other: "🌍 अन्य देश",
+    regQ: "क्या आपने मतदाता के रूप में पंजीकरण कराया है?",
+    regYes: "✅ हाँ, मैं पंजीकृत हूँ",
+    regNo: "📝 नहीं, अभी तक नहीं",
+    regUnsure: "🤔 मुझे पता नहीं",
+    changeCountry: "देश बदलें",
+    startOver: "शुरू से शुरू करें",
+
+    // Sections
+    regRoadmap: "पंजीकरण रोडमैप",
+    votingPrep: "मतदान दिवस की तैयारी",
+    beforeVoting: "📋 मतदान दिवस से पहले",
+    onVotingDay: "🗳️ मतदान के दिन",
+    proTips: "💡 ज़रूरी टिप्स",
+    eciForms: "महत्वपूर्ण ECI फॉर्म",
+    resources: "संसाधन और संदर्भ",
+    resourcesSub: "चुनाव कैसे काम करते हैं, इसकी बड़ी तस्वीर समझें।",
+    timeline: "चुनाव समयरेखा",
+    mythFact: "मिथक बनाम तथ्य",
+    myth: "मिथक",
+    fact: "तथ्य",
+
+    // Footer
+    footerCopy: "© 2026 चुनाव सहायक",
+    footerNon: "निष्पक्ष",
+    footerEdu: "केवल शैक्षणिक",
+    footerVerify: "हमेशा ECI / स्थानीय स्रोतों से सत्यापित करें",
+
+    backHome: "शुरू से शुरू करें",
+  }
+};
