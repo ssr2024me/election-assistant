@@ -249,18 +249,35 @@ function App() {
   useEffect(() => { setReady(true); }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
 
+  // Sync with browser back button
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (e.state && e.state.step) {
+        setStep(e.state.step);
+      } else {
+        setStep('initial');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const pick = (nextStep, key, value) => {
     setChoices(p => ({ ...p, [key]: value }));
     setStep(nextStep);
+    window.history.pushState({ step: nextStep }, ''); // Add to browser history
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
+  
   const reset = () => { 
     setStep('initial'); 
     setChoices({}); 
     setChecked({}); 
     setShowPledge(false); 
-    setUserName(''); 
+    setUserName('');
+    window.history.pushState({ step: 'initial' }, ''); // Reset history
   };
 
   const country = choices.country || 'general';
