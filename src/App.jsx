@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Volume2, Timer } from 'lucide-react';
+import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Volume2, Timer, Home } from 'lucide-react';
 import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
@@ -239,6 +239,7 @@ function App() {
       <header className="header">
         <div className="container header-inner">
           <div className="logo-area">
+            <button className="home-btn" onClick={reset} title="Home"><Home size={18} /></button>
             <div className="logo-badge"><Vote size={22} /></div>
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
           </div>

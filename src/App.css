@@ -12,7 +12,7 @@
 
 .app-container.ready {
   opacity: 1;
-  background-image: linear-gradient(rgba(11, 15, 26, 0.85), rgba(11, 15, 26, 0.85)), url('/election-assistant/election-bg.png');
+  background-image: linear-gradient(rgba(11, 15, 26, 0.92), rgba(11, 15, 26, 0.92)), url('/election-assistant/election-bg.png');
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -70,6 +70,26 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.home-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  transform: scale(1.1);
 }
 
 .logo-badge {
@@ -1037,7 +1057,7 @@
 }
 
 [data-theme="light"] .app-container.ready {
-  background-image: linear-gradient(rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.94)), url('/election-assistant/election-bg.png');
+  background-image: linear-gradient(rgba(248, 250, 252, 0.96), rgba(248, 250, 252, 0.96)), url('/election-assistant/election-bg.png');
 }
 
 [data-theme="light"] .app-container::before {
