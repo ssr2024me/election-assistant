@@ -21,11 +21,29 @@ export const statesData = {
   "west-bengal": { name: "West Bengal", nameHi: "पश्चिम बंगाल", capital: "Kolkata", seats: 42, assemblySeats: 294, ecLink: "https://ceowestbengal.nic.in/", nextElection: "2026", boothLink: "https://ceowestbengal.nic.in/" }
 };
 
-// Next major election date (update as needed)
-export const nextElectionInfo = {
-  name: "Kerala & Tamil Nadu Assembly Elections",
-  nameHi: "केरल और तमिलनाडु विधानसभा चुनाव",
-  date: "2026-10-01T08:00:00",
-  type: "State Assembly",
-  typeHi: "राज्य विधानसभा"
-};
+// Upcoming elections list — countdown auto-picks the nearest future one
+// When one passes, it automatically moves to the next
+export const upcomingElections = [
+  { name: "Kerala Assembly Election", nameHi: "केरल विधानसभा चुनाव", date: "2026-05-15T08:00:00" },
+  { name: "Tamil Nadu Assembly Election", nameHi: "तमिलनाडु विधानसभा चुनाव", date: "2026-05-20T08:00:00" },
+  { name: "West Bengal Assembly Election", nameHi: "पश्चिम बंगाल विधानसभा चुनाव", date: "2026-06-01T08:00:00" },
+  { name: "Punjab Assembly Election", nameHi: "पंजाब विधानसभा चुनाव", date: "2027-03-01T08:00:00" },
+  { name: "Uttar Pradesh Assembly Election", nameHi: "उत्तर प्रदेश विधानसभा चुनाव", date: "2027-03-10T08:00:00" },
+  { name: "Gujarat Assembly Election", nameHi: "गुजरात विधानसभा चुनाव", date: "2027-12-01T08:00:00" },
+  { name: "Himachal Pradesh Assembly Election", nameHi: "हिमाचल प्रदेश विधानसभा चुनाव", date: "2027-12-15T08:00:00" },
+  { name: "Karnataka Assembly Election", nameHi: "कर्नाटक विधानसभा चुनाव", date: "2028-05-01T08:00:00" },
+  { name: "Rajasthan Assembly Election", nameHi: "राजस्थान विधानसभा चुनाव", date: "2028-12-01T08:00:00" },
+  { name: "Madhya Pradesh Assembly Election", nameHi: "मध्य प्रदेश विधानसभा चुनाव", date: "2028-12-10T08:00:00" },
+  { name: "Telangana Assembly Election", nameHi: "तेलंगाना विधानसभा चुनाव", date: "2028-12-15T08:00:00" },
+  { name: "Lok Sabha General Election", nameHi: "लोकसभा आम चुनाव", date: "2029-04-15T08:00:00" },
+  { name: "Maharashtra Assembly Election", nameHi: "महाराष्ट्र विधानसभा चुनाव", date: "2029-10-01T08:00:00" },
+  { name: "Haryana Assembly Election", nameHi: "हरियाणा विधानसभा चुनाव", date: "2029-10-15T08:00:00" },
+  { name: "Jharkhand Assembly Election", nameHi: "झारखंड विधानसभा चुनाव", date: "2029-12-01T08:00:00" },
+  { name: "Delhi Assembly Election", nameHi: "दिल्ली विधानसभा चुनाव", date: "2030-02-01T08:00:00" },
+];
+
+// Helper: get next upcoming election
+export function getNextElection() {
+  const now = Date.now();
+  return upcomingElections.find(e => new Date(e.date).getTime() > now) || upcomingElections[upcomingElections.length - 1];
+}

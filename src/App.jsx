@@ -4,7 +4,37 @@ import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Ca
 import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
-import { statesData, nextElectionInfo } from './data/statesData';
+import { statesData, getNextElection } from './data/statesData';
+
+// Isolated countdown component — won't re-render the parent App
+function CountdownTimer({ lang }) {
+  const t = translations[lang];
+  const [cd, setCd] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [election, setElection] = useState(getNextElection());
+  useEffect(() => {
+    const tick = () => {
+      const next = getNextElection();
+      setElection(next);
+      const diff = Math.max(0, new Date(next.date).getTime() - Date.now());
+      setCd({ d: Math.floor(diff / 86400000), h: Math.floor((diff % 86400000) / 3600000), m: Math.floor((diff % 3600000) / 60000), s: Math.floor((diff % 60000) / 1000) });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="countdown-section">
+      <div className="countdown-label"><Timer size={13} style={{ verticalAlign: 'middle' }} /> {t.countdown}</div>
+      <div className="countdown-event">{lang === 'hi' ? election.nameHi : election.name}</div>
+      <div className="countdown-grid">
+        <div className="countdown-box"><div className="countdown-number">{cd.d}</div><div className="countdown-unit">{t.days}</div></div>
+        <div className="countdown-box"><div className="countdown-number">{cd.h}</div><div className="countdown-unit">{t.hours}</div></div>
+        <div className="countdown-box"><div className="countdown-number">{cd.m}</div><div className="countdown-unit">{t.minutes}</div></div>
+        <div className="countdown-box"><div className="countdown-number">{cd.s}</div><div className="countdown-unit">{t.seconds}</div></div>
+      </div>
+    </div>
+  );
+}
 
 function App() {
   const [step, setStep] = useState('initial');
@@ -17,29 +47,10 @@ function App() {
   const [selectedState, setSelectedState] = useState('');
   const [copied, setCopied] = useState(false);
   const [speaking, setSpeaking] = useState(false);
-  const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   const t = translations[lang];
   useEffect(() => { setReady(true); }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
-
-  // Countdown timer
-  useEffect(() => {
-    const target = new Date(nextElectionInfo.date).getTime();
-    const tick = () => {
-      const now = Date.now();
-      const diff = Math.max(0, target - now);
-      setCountdown({
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff % 86400000) / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-        s: Math.floor((diff % 60000) / 1000)
-      });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
 
   const pick = (nextStep, key, value) => {
     setChoices(p => ({ ...p, [key]: value }));
@@ -256,19 +267,8 @@ function App() {
             </motion.div>
           )}
 
-          {/* COUNTDOWN TIMER */}
-          {step === 'initial' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="countdown-section">
-              <div className="countdown-label"><Timer size={13} style={{ verticalAlign: 'middle' }} /> {t.countdown}</div>
-              <div className="countdown-event">{lang === 'hi' ? nextElectionInfo.nameHi : nextElectionInfo.name}</div>
-              <div className="countdown-grid">
-                <div className="countdown-box"><div className="countdown-number">{countdown.d}</div><div className="countdown-unit">{t.days}</div></div>
-                <div className="countdown-box"><div className="countdown-number">{countdown.h}</div><div className="countdown-unit">{t.hours}</div></div>
-                <div className="countdown-box"><div className="countdown-number">{countdown.m}</div><div className="countdown-unit">{t.minutes}</div></div>
-                <div className="countdown-box"><div className="countdown-number">{countdown.s}</div><div className="countdown-unit">{t.seconds}</div></div>
-              </div>
-            </motion.div>
-          )}
+          {/* COUNTDOWN TIMER — isolated component, no parent re-render */}
+          {step === 'initial' && <CountdownTimer lang={lang} />}
         </section>
 
         <div className="interaction-wrapper">
