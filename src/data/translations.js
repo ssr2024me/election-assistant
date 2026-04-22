@@ -71,6 +71,16 @@ export const translations = {
     voiceStop: "⏹️",
     stateGuide: "State Guide",
     stateGuideDesc: "Select your state for specific election info.",
+    
+    // Pledge
+    takePledge: "📜 Take the Voter Pledge",
+    pledgeTitle: "Voter Pledge Certificate",
+    pledgeDesc: "Commit to being a responsible citizen. Get your certificate!",
+    enterName: "Enter Your Full Name",
+    generateCert: "Generate My Certificate",
+    pledgeText: "I, having faith in democracy, hereby pledge to uphold the democratic traditions of my country and the dignity of free, fair and peaceful elections, and to vote in every election fearlessly and without being influenced by considerations of religion, race, caste, community, language or any inducement.",
+    downloadCert: "📸 Screenshot to Share",
+    responsibleVoter: "Responsible Voter 2026",
   },
   hi: {
     // Header
@@ -142,5 +152,15 @@ export const translations = {
     voiceStop: "⏹️",
     stateGuide: "राज्य गाइड",
     stateGuideDesc: "अपने राज्य की चुनाव जानकारी के लिए राज्य चुनें।",
+    
+    // Pledge
+    takePledge: "📜 मतदाता शपथ लें",
+    pledgeTitle: "मतदाता शपथ प्रमाण पत्र",
+    pledgeDesc: "एक जिम्मेदार नागरिक बनने का संकल्प लें। अपना सर्टिफिकेट पाएं!",
+    enterName: "अपना पूरा नाम लिखें",
+    generateCert: "मेरा सर्टिफिकेट बनाएं",
+    pledgeText: "हम, भारत के नागरिक, लोकतंत्र में अपनी पूर्ण आस्था रखते हुए यह शपथ लेते हैं कि हम अपने देश की लोकतांत्रिक परम्पराओं की मर्यादा को बनाए रखेंगे तथा स्वतंत्र, निष्पक्ष एवं शांतिपूर्ण निर्वाचन की गरिमा को अक्षुण्ण रखते हुए, निर्भीक होकर, धर्म, वर्ग, जाति, समुदाय, भाषा अथवा अन्य किसी भी प्रलोभन से प्रभावित हुए बिना सभी निर्वाचनों में अपने मताधिकार का प्रयोग करेंगे।",
+    downloadCert: "📸 स्क्रीनशॉट लेकर शेयर करें",
+    responsibleVoter: "जिम्मेदार मतदाता 2026",
   }
 };

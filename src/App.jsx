@@ -47,6 +47,8 @@ function App() {
   const [selectedState, setSelectedState] = useState('');
   const [copied, setCopied] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [showPledge, setShowPledge] = useState(false);
 
   const t = translations[lang];
   useEffect(() => { setReady(true); }, []);
@@ -58,7 +60,13 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
-  const reset = () => { setStep('initial'); setChoices({}); setChecked({}); };
+  const reset = () => { 
+    setStep('initial'); 
+    setChoices({}); 
+    setChecked({}); 
+    setShowPledge(false); 
+    setUserName(''); 
+  };
 
   const country = choices.country || 'general';
   const countryData = electionData[country];
@@ -219,6 +227,53 @@ function App() {
             ))}</div>
           </div>
         )}
+        {/* Pledge Section */}
+        {!showPledge ? (
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="pledge-section">
+            <div className="pledge-card">
+              <h3 className="section-title">{t.takePledge}</h3>
+              <p className="section-subtitle">{t.pledgeDesc}</p>
+              <input 
+                type="text" 
+                className="name-input" 
+                placeholder={t.enterName} 
+                value={userName} 
+                onChange={(e) => setUserName(e.target.value)} 
+              />
+              <br />
+              <button 
+                className="btn-cert" 
+                onClick={() => userName.trim() && setShowPledge(true)}
+                disabled={!userName.trim()}
+              >
+                {t.generateCert}
+              </button>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="certificate-wrapper">
+            <div className="certificate">
+              <div className="cert-header">
+                <div className="cert-title">{t.pledgeTitle}</div>
+              </div>
+              <div className="cert-body">
+                <div className="cert-name">{userName}</div>
+                <p className="cert-text">{t.pledgeText}</p>
+              </div>
+              <div className="cert-footer">
+                <div className="cert-seal">
+                  <Vote size={32} />
+                </div>
+                <div className="cert-badge">
+                  {t.responsibleVoter}<br />
+                  {new Date().toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+            <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{t.downloadCert}</p>
+          </motion.div>
+        )}
+
         {/* Share Button */}
         <div style={{ textAlign: 'center' }}>
           <motion.button whileHover={{ scale: 1.05 }} className={`share-btn ${copied ? 'copied' : ''}`} onClick={handleShare}>
