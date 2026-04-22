@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Timer, Home } from 'lucide-react';
+import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Timer, Home, Phone, Smartphone, ShieldCheck, UserCheck, ExternalLink } from 'lucide-react';
 import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
@@ -428,6 +428,38 @@ function App() {
             </div>
           </motion.section>
         )}
+
+        {/* OFFICIAL TOOLS SECTION */}
+        <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="deep-dive" style={{ marginTop: '2rem' }}>
+          <h2 className="section-title center">{t.officialTools}</h2>
+          <p className="section-subtitle">{t.officialToolsSub}</p>
+          <div className="tools-grid">
+            <a href="tel:1950" className="tool-card helpline">
+              <div className="tool-icon-box"><Phone size={24} /></div>
+              <h4>1950 {t.callHelpline}</h4>
+              <p>{t.helplineDesc}</p>
+              <div className="tool-action-btn">{t.callHelpline} <ArrowRight size={14} /></div>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.eci.citizen" target="_blank" rel="noopener noreferrer" className="tool-card">
+              <div className="tool-icon-box"><Smartphone size={24} /></div>
+              <h4>{t.voterApp}</h4>
+              <p>{t.voterAppDesc}</p>
+              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=in.nic.eci.cvigil" target="_blank" rel="noopener noreferrer" className="tool-card">
+              <div className="tool-icon-box"><ShieldCheck size={24} /></div>
+              <h4>{t.cvigilApp}</h4>
+              <p>{t.cvigilAppDesc}</p>
+              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.eci.kyc" target="_blank" rel="noopener noreferrer" className="tool-card">
+              <div className="tool-icon-box"><UserCheck size={24} /></div>
+              <h4>{t.kycApp}</h4>
+              <p>{t.kycAppDesc}</p>
+              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
+            </a>
+          </div>
+        </motion.section>
       </main>
 
       <footer className="footer"><div className="container">

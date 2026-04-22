@@ -81,6 +81,19 @@ export const translations = {
     pledgeText: "I, having faith in democracy, hereby pledge to uphold the democratic traditions of my country and the dignity of free, fair and peaceful elections, and to vote in every election fearlessly and without being influenced by considerations of religion, race, caste, community, language or any inducement.",
     downloadCert: "📸 Screenshot to Share",
     responsibleVoter: "Responsible Voter 2026",
+    
+    // Official Tools
+    officialTools: "Official ECI Tools",
+    officialToolsSub: "Official resources from the Election Commission of India.",
+    callHelpline: "Call Helpline",
+    helplineDesc: "Toll-free national voter helpline number.",
+    voterApp: "Voter Helpline App",
+    voterAppDesc: "Check your name, find booth, and download e-EPIC.",
+    cvigilApp: "cVIGIL App",
+    cvigilAppDesc: "Report model code of conduct violations live.",
+    kycApp: "KYC App",
+    kycAppDesc: "Know your candidate's profile and criminal record.",
+    visitECI: "Visit ECI Website",
   },
   hi: {
     // Header
@@ -162,5 +175,18 @@ export const translations = {
     pledgeText: "हम, भारत के नागरिक, लोकतंत्र में अपनी पूर्ण आस्था रखते हुए यह शपथ लेते हैं कि हम अपने देश की लोकतांत्रिक परम्पराओं की मर्यादा को बनाए रखेंगे तथा स्वतंत्र, निष्पक्ष एवं शांतिपूर्ण निर्वाचन की गरिमा को अक्षुण्ण रखते हुए, निर्भीक होकर, धर्म, वर्ग, जाति, समुदाय, भाषा अथवा अन्य किसी भी प्रलोभन से प्रभावित हुए बिना सभी निर्वाचनों में अपने मताधिकार का प्रयोग करेंगे।",
     downloadCert: "📸 स्क्रीनशॉट लेकर शेयर करें",
     responsibleVoter: "जिम्मेदार मतदाता 2026",
+    
+    // Official Tools
+    officialTools: "आधिकारिक ECI टूल्स",
+    officialToolsSub: "भारत निर्वाचन आयोग के आधिकारिक संसाधन।",
+    callHelpline: "हेल्पलाइन कॉल करें",
+    helplineDesc: "टोल-फ्री राष्ट्रीय मतदाता हेल्पलाइन नंबर।",
+    voterApp: "वोटर हेल्पलाइन ऐप",
+    voterAppDesc: "नाम जांचें, बूथ खोजें और ई-एपिक डाउनलोड करें।",
+    cvigilApp: "cVIGIL ऐप",
+    cvigilAppDesc: "आचार संहिता के उल्लंघन की लाइव रिपोर्ट करें।",
+    kycApp: "KYC ऐप",
+    kycAppDesc: "अपने उम्मीदवार की प्रोफाइल और रिकॉर्ड जानें।",
+    visitECI: "ECI वेबसाइट पर जाएं",
   }
 };
