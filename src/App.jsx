@@ -271,6 +271,10 @@ function App() {
 
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
   
+  const goBack = () => {
+    window.history.back();
+  };
+  
   const reset = () => { 
     setStep('initial'); 
     setChoices({}); 
@@ -315,6 +319,7 @@ function App() {
         <div className="container header-inner">
           <div className="logo-area">
             <button className="home-btn" onClick={reset} title="Home"><Home size={18} /></button>
+            {step !== 'initial' && <button className="home-btn" onClick={goBack} title="Back"><ChevronLeft size={18} /></button>}
             <div className="logo-badge"><Vote size={22} /></div>
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
           </div>
