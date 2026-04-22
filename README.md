@@ -53,7 +53,9 @@ npm install
 npm run dev
 ```
 
-The app will be running at **http://localhost:5173/**
+The app will be running at **http://localhost:5173/** during development.
+
+🔗 **Live Production App:** [https://ssr2024me.github.io/election-assistant/](https://ssr2024me.github.io/election-assistant/)
 
 ### Build for Production
 
