@@ -1,41 +1,80 @@
 # 🗳️ Election Assistant
 
-An interactive, non-partisan web application that helps users understand the election process, voter registration, and voting procedures — step by step.
+An interactive, premium, and non-partisan web application designed to guide Indian citizens through the entire election process — from registration to the polling booth.
+
+🔗 **Live Production App:** [https://ssr2024me.github.io/election-assistant/](https://ssr2024me.github.io/election-assistant/)
 
 > **Built with React 19 + Vite + Framer Motion**
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
 | Feature | Description |
 |---|---|
-| 🌐 **Country Selection** | India 🇮🇳, USA 🇺🇸, and General guidance |
-| 📝 **Registration Roadmap** | Step-by-step guide to voter registration |
-| ✅ **Interactive Checklists** | "Before Voting Day" & "On Voting Day" tasks |
-| 📊 **Election Timeline** | 6-stage visual timeline from announcement to results |
-| 🔍 **Myth vs Fact** | Debunks 5 common election myths |
-| 💡 **Explain Simply Mode** | Easy analogies for complex processes |
-| 🌙☀️ **Dark/Light Theme** | Toggle between dark and light modes |
-| 🇮🇳🇬🇧 **Hindi/English** | Full bilingual support with one-click toggle |
+| 🇮🇳🇬🇧 **Bilingual Support** | Full English & Hindi support with a seamless one-click toggle. |
+| 📜 **Voter Pledge** | Take a digital pledge and generate a personalized **Voter Certificate**. |
+| 📞 **Official ECI Tools** | Direct integration with **1950 Helpline** and official ECI Apps (Voter Helpline, cVIGIL, KYC). |
+| 🔊 **Voice Mode** | Native **Text-to-Speech** support for better accessibility. |
+| ⏳ **Smart Countdown** | Automatically detects and shows the timer for the next upcoming election. |
+| 🌙☀️ **Theme Engine** | Premium Dark and Light modes with a cinematic background. |
+| 📍 **State-wise Guide** | Detailed data and booth finders for 20+ major Indian states. |
+| 💡 **Explain Simply** | Simplifies complex electoral terms using fun, easy-to-understand analogies. |
 
 ---
 
-## 🇮🇳 India-Specific Features
+## 🚀 India-Specific Utilities
 
-- **Form 6** — New voter registration via NVSP
-- **EPIC (Voter ID)** — Step-by-step guide to get your Voter ID
-- **ECI Forms Table** — Quick reference for Form 6, 6B, 7, 8, 8A
-- **12 Accepted IDs** — Know what to carry on voting day
-- **EVM & VVPAT** — How electronic voting works
-- **Direct Portal Links** — Links to official ECI and Electoral Search portals
+- **Registration Roadmap** — Step-by-step guide for Form 6, 6B, 7, and 8.
+- **EPIC Guide** — How to search your name in the electoral roll and download e-EPIC.
+- **Booth Finder** — One-click access to state-specific electoral search portals.
+- **Voter ID Checklist** — List of 12 alternative identity documents accepted at polls.
+- **EVM & VVPAT** — Educational guide on how to use electronic voting machines correctly.
+
+---
+
+## 🛠️ Tech Stack
+
+- **React 19** — Modern component-based architecture.
+- **Vite 8** — Optimized build tool for lightning-fast performance.
+- **Framer Motion** — Premium animations and layout transitions.
+- **Lucide React** — High-quality iconography.
+- **Vanilla CSS** — Custom-crafted Design System with CSS variables (Glassmorphism).
+
+---
+
+## 📂 Project Structure
+
+```
+election-assistant/
+├── public/
+│   └── election-bg.png       # Premium cinematic background
+├── src/
+│   ├── data/
+│   │   ├── electionSteps.js  # Main election logic & roadmap
+│   │   ├── translations.js   # Bilingual UI strings (EN/HI)
+│   │   └── statesData.js     # State-wise data & countdown logic
+│   ├── App.jsx               # Refactored robust core application
+│   ├── App.css               # Premium design & theme system
+│   └── main.jsx              # Entry point
+```
+
+---
+
+## 📸 Functionality Highlights
+
+### 🏠 Hero & Countdown
+The app features a dynamic countdown that automatically updates based on the next scheduled election in India (covered up to 2030).
+
+### 📜 Digital Voter Pledge
+Users can enter their name to generate a formal **Voter Pledge Certificate**. This feature includes safety disclaimers to clarify its purpose as a digital awareness tool.
+
+### 📍 Interactive State Guide
+Provides seat counts (Lok Sabha/Assembly) and direct links to official State Election Commission websites.
 
 ---
 
 ## 🚀 Getting Started
-
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or above)
 
 ### Installation
 
@@ -43,86 +82,23 @@ An interactive, non-partisan web application that helps users understand the ele
 # Clone the repository
 git clone https://github.com/ssr2024me/election-assistant.git
 
-# Navigate to the project
-cd election-assistant
-
 # Install dependencies
 npm install
 
 # Start the development server
 npm run dev
 ```
-
 The app will be running at **http://localhost:5173/** during development.
-
-🔗 **Live Production App:** [https://ssr2024me.github.io/election-assistant/](https://ssr2024me.github.io/election-assistant/)
-
-### Build for Production
-
-```bash
-npm run build
-```
-
----
-
-## 📁 Project Structure
-
-```
-election-assistant/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── data/
-│   │   ├── electionSteps.js    # All election data (bilingual)
-│   │   └── translations.js     # UI text in Hindi & English
-│   ├── App.jsx                 # Main application component
-│   ├── App.css                 # Component styles + theme
-│   ├── index.css               # Global styles + CSS variables
-│   └── main.jsx                # React entry point
-├── index.html
-├── package.json
-└── vite.config.js
-```
-
----
-
-## 🛠️ Tech Stack
-
-- **React 19** — Component-based UI
-- **Vite 8** — Lightning-fast dev server & bundler
-- **Framer Motion** — Smooth page transitions & micro-animations
-- **Lucide React** — Beautiful, consistent icons
-- **Vanilla CSS** — Custom design system with CSS variables
-
----
-
-## 📸 Screenshots
-
-### 🏠 Home Page (Dark Mode)
-- Premium hero section with gradient title
-- Quick stats bar (96.8 Cr+ voters, 543 Lok Sabha seats)
-- Interactive country selection
-
-### 📝 Registration Roadmap
-- Color-coded step cards
-- Direct links to official portals (NVSP, ECI)
-- "Explain Simply" mode with fun analogies
-
-### ✅ Voting Day Checklist
-- Interactive checkboxes
-- Separate "Before" and "On Day" sections
-- Pro tips for first-time voters
 
 ---
 
 ## ⚠️ Disclaimer
 
-This is an **educational tool** designed to simplify the election process. It is:
-- ✅ Non-partisan and unbiased
-- ✅ Based on publicly available information
-- ❌ NOT an official government application
-
-Always verify deadlines and requirements with your **local Election Commission** or official sources.
+This is an **educational awareness tool** designed to simplify the election process. It is:
+- ✅ Non-partisan and unbiased.
+- ✅ Based on official ECI data and public information.
+- ❌ NOT an official government application.
+- 📜 Pledge certificates are self-generated for digital awareness and have no legal validity.
 
 ---
 
@@ -132,4 +108,4 @@ This project is open source and available for educational purposes.
 
 ---
 
-**Made with ❤️ for Democracy**
+**Made with ❤️ for a Stronger Democracy**
