@@ -1,12 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Volume2, Timer, Home } from 'lucide-react';
+import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Timer, Home } from 'lucide-react';
 import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
 import { statesData, getNextElection } from './data/statesData';
 
-// Isolated countdown component — won't re-render the parent App
+// --- SUB-COMPONENTS (Outside main App to prevent focus loss) ---
+
+const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
+const stagger = { hidden: { opacity: 0, x: -16 }, show: (i) => ({ opacity: 1, x: 0, transition: { delay: i * 0.08, duration: 0.35 } }) };
+
 function CountdownTimer({ lang }) {
   const t = translations[lang];
   const [cd, setCd] = useState({ d: 0, h: 0, m: 0, s: 0 });
@@ -35,6 +39,197 @@ function CountdownTimer({ lang }) {
     </div>
   );
 }
+
+function Initial({ t, pick }) {
+  const countryLabels = [t.india, t.usa, t.other];
+  return (
+    <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
+      <Globe className="icon-main" size={44} strokeWidth={1.5} />
+      <h2 className="question-text">{t.countryQ}</h2>
+      <div className="options-grid">
+        {electionData.initial.options.map((o, i) => (
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} key={o.value} className="option-btn" onClick={() => pick(o.next, 'country', o.value)}>
+            {countryLabels[i]}
+          </motion.button>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function RegStatus({ t, pick, setStep, regLabels }) {
+  return (
+    <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
+      <Vote className="icon-main" size={44} strokeWidth={1.5} />
+      <h2 className="question-text">{t.regQ}</h2>
+      <div className="options-grid">
+        {electionData.registrationStatus.options.map((o, i) => (
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} key={o.value} className="option-btn" onClick={() => pick(o.next, 'registered', o.value)}>
+            {regLabels[i]}
+          </motion.button>
+        ))}
+      </div>
+      <button className="btn-ghost" onClick={() => setStep('initial')}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.changeCountry}</button>
+    </motion.div>
+  );
+}
+
+function Guide({ t, lang, countryData, simpleMode, speak, reset, speaking }) {
+  const guide = countryData.registrationGuide;
+  const allText = guide.map(s => lang === 'hi' && s.contentHi ? s.contentHi : s.content).join('. ');
+  return (
+    <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="guide-container">
+      <div className="section-header">
+        <FileText className="icon-section" size={22} /><h2 className="section-title">{t.regRoadmap}</h2>
+        <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(allText)} title="Voice">{speaking ? '⏹️' : '🔊'}</button>
+      </div>
+      <div className="steps-list">
+        {guide.map((s, i) => (
+          <motion.div custom={i} variants={stagger} initial="hidden" animate="show" key={s.id} className="step-item">
+            <div className="step-icon-box">{s.icon}</div>
+            <div className="step-content">
+              <h3>{lang === 'hi' && s.titleHi ? s.titleHi : s.title}</h3>
+              <p className="step-text">{lang === 'hi' && s.contentHi ? s.contentHi : s.content}</p>
+              {simpleMode && s.simpleContent && <span className="simple-analogy">💡 {lang === 'hi' && s.simpleHi ? s.simpleHi : s.simpleContent}</span>}
+              {s.link && <motion.a whileHover={{ x: 4 }} href={s.link} target="_blank" rel="noopener noreferrer" className="cta-btn saffron">{lang === 'hi' && s.ctaHi ? s.ctaHi : s.cta} <ArrowRight size={16} /></motion.a>}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+      {countryData.importantForms && (
+        <div className="forms-section">
+          <h3 className="checklist-label"><FileText size={16} /> {t.eciForms}</h3>
+          <div className="forms-table">
+            {countryData.importantForms.map((f, i) => (
+              <div key={i} className="forms-row"><div className="form-name">{f.form}</div><div className="form-purpose">{lang === 'hi' && f.purposeHi ? f.purposeHi : f.purpose}</div></div>
+            ))}
+          </div>
+        </div>
+      )}
+      <div style={{ textAlign: 'center' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
+    </motion.div>
+  );
+}
+
+function StatusCheck({ t, lang, countryData, reset }) {
+  const d = countryData.checkStatus;
+  return (
+    <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="status-card">
+      <Search className="icon-main" size={44} strokeWidth={1.5} />
+      <h2 className="question-text">{lang === 'hi' && d.titleHi ? d.titleHi : d.title}</h2>
+      <p className="status-desc">{lang === 'hi' && d.contentHi ? d.contentHi : d.content}</p>
+      {d.link && <motion.a whileHover={{ scale: 1.03 }} href={d.link} target="_blank" rel="noopener noreferrer" className="cta-btn large">{lang === 'hi' && d.ctaHi ? d.ctaHi : d.cta} <ArrowRight size={18} /></motion.a>}
+      <button className="btn-ghost" onClick={reset}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.backHome}</button>
+    </motion.div>
+  );
+}
+
+function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, reset, userName, setUserName, showPledge, setShowPledge, handleShare, copied }) {
+  const d = countryData.readyToVote;
+  return (
+    <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="ready-container">
+      <div className="section-header">
+        <CheckCircle2 className="icon-section" size={22} style={{ color: 'var(--accent-green)' }} /><h2 className="section-title">{t.votingPrep}</h2>
+        <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(d.beforeChecklist.map(i => lang === 'hi' && i.labelHi ? i.labelHi : i.label).join('. '))} title="Voice">{speaking ? '⏹️' : '🔊'}</button>
+      </div>
+      {d.beforeChecklist && (
+        <div className="checklist-section">
+          <div className="checklist-label">{t.beforeVoting}</div>
+          <div className="checklist-card">
+            {d.beforeChecklist.map((item, i) => { const id = `before-${i}`; return (
+              <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
+                <span className="check-icon">{item.icon}</span>
+                <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
+                <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
+              </motion.div>
+            ); })}
+          </div>
+        </div>
+      )}
+      {d.onDayChecklist && (
+        <div className="checklist-section">
+          <div className="checklist-label">{t.onVotingDay}</div>
+          <div className="checklist-card">
+            {d.onDayChecklist.map((item, i) => { const id = `onday-${i}`; return (
+              <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
+                <span className="check-icon">{item.icon}</span>
+                <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
+                <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
+              </motion.div>
+            ); })}
+          </div>
+        </div>
+      )}
+      {d.tips && (
+        <div className="tips-section"><div className="checklist-label">{t.proTips}</div>
+          <div className="tips-grid">{d.tips.map((tip, i) => (
+            <motion.div whileHover={{ y: -3 }} key={i} className="tip-card">
+              <h4>{lang === 'hi' && tip.titleHi ? tip.titleHi : tip.title}</h4>
+              <p>{lang === 'hi' && tip.contentHi ? tip.contentHi : tip.content}</p>
+            </motion.div>
+          ))}</div>
+        </div>
+      )}
+
+      {/* Pledge Section */}
+      {!showPledge ? (
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="pledge-section">
+          <div className="pledge-card">
+            <h3 className="section-title">{t.takePledge}</h3>
+            <p className="section-subtitle">{t.pledgeDesc}</p>
+            <input 
+              type="text" 
+              className="name-input" 
+              placeholder={t.enterName} 
+              value={userName} 
+              onChange={(e) => setUserName(e.target.value)} 
+            />
+            <br />
+            <button 
+              className="btn-cert" 
+              onClick={() => userName.trim() && setShowPledge(true)}
+              disabled={!userName.trim()}
+            >
+              {t.generateCert}
+            </button>
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="certificate-wrapper">
+          <div className="certificate">
+            <div className="cert-header">
+              <div className="cert-title">{t.pledgeTitle}</div>
+            </div>
+            <div className="cert-body">
+              <div className="cert-name">{userName}</div>
+              <p className="cert-text">{t.pledgeText}</p>
+            </div>
+            <div className="cert-footer">
+              <div className="cert-seal">
+                <Vote size={32} />
+              </div>
+              <div className="cert-badge">
+                {t.responsibleVoter}<br />
+                {new Date().toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+          <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{t.downloadCert}</p>
+        </motion.div>
+      )}
+
+      {/* Share Button */}
+      <div style={{ textAlign: 'center' }}>
+        <motion.button whileHover={{ scale: 1.05 }} className={`share-btn ${copied ? 'copied' : ''}`} onClick={handleShare}>
+          <Share2 size={16} /> {copied ? t.shareCopied : t.shareCard}
+        </motion.button>
+      </div>
+      <div style={{ textAlign: 'center', marginTop: '10px' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
+    </motion.div>
+  );
+}
+
+// --- MAIN APP COMPONENT ---
 
 function App() {
   const [step, setStep] = useState('initial');
@@ -69,7 +264,7 @@ function App() {
   };
 
   const country = choices.country || 'general';
-  const countryData = electionData[country];
+  const countryData = electionData[country] || electionData.india;
 
   // Voice Mode
   const speak = (text) => {
@@ -94,201 +289,9 @@ function App() {
     }
   };
 
-  const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
-  const stagger = { hidden: { opacity: 0, x: -16 }, show: (i) => ({ opacity: 1, x: 0, transition: { delay: i * 0.08, duration: 0.35 } }) };
-
-  const countryLabels = [t.india, t.usa, t.other];
+  const stateInfo = statesData[selectedState];
   const regLabels = [t.regYes, t.regNo, t.regUnsure];
 
-  /* ---------- SCREENS ---------- */
-
-  const Initial = () => (
-    <motion.div key="init" variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
-      <Globe className="icon-main" size={44} strokeWidth={1.5} />
-      <h2 className="question-text">{t.countryQ}</h2>
-      <div className="options-grid">
-        {electionData.initial.options.map((o, i) => (
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} key={o.value} className="option-btn" onClick={() => pick(o.next, 'country', o.value)}>
-            {countryLabels[i]}
-          </motion.button>
-        ))}
-      </div>
-    </motion.div>
-  );
-
-  const RegStatus = () => (
-    <motion.div key="reg" variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
-      <Vote className="icon-main" size={44} strokeWidth={1.5} />
-      <h2 className="question-text">{t.regQ}</h2>
-      <div className="options-grid">
-        {electionData.registrationStatus.options.map((o, i) => (
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} key={o.value} className="option-btn" onClick={() => pick(o.next, 'registered', o.value)}>
-            {regLabels[i]}
-          </motion.button>
-        ))}
-      </div>
-      <button className="btn-ghost" onClick={() => setStep('initial')}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.changeCountry}</button>
-    </motion.div>
-  );
-
-  const Guide = () => {
-    const guide = countryData.registrationGuide;
-    const allText = guide.map(s => lang === 'hi' && s.contentHi ? s.contentHi : s.content).join('. ');
-    return (
-      <motion.div key="guide" variants={fade} initial="hidden" animate="show" exit="exit" className="guide-container">
-        <div className="section-header">
-          <FileText className="icon-section" size={22} /><h2 className="section-title">{t.regRoadmap}</h2>
-          <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(allText)} title="Voice">{speaking ? t.voiceStop : t.voiceMode}</button>
-        </div>
-        <div className="steps-list">
-          {guide.map((s, i) => (
-            <motion.div custom={i} variants={stagger} initial="hidden" animate="show" key={s.id} className="step-item">
-              <div className="step-icon-box">{s.icon}</div>
-              <div className="step-content">
-                <h3>{lang === 'hi' && s.titleHi ? s.titleHi : s.title}</h3>
-                <p className="step-text">{lang === 'hi' && s.contentHi ? s.contentHi : s.content}</p>
-                {simpleMode && s.simpleContent && <span className="simple-analogy">💡 {lang === 'hi' && s.simpleHi ? s.simpleHi : s.simpleContent}</span>}
-                {s.link && <motion.a whileHover={{ x: 4 }} href={s.link} target="_blank" rel="noopener noreferrer" className="cta-btn saffron">{lang === 'hi' && s.ctaHi ? s.ctaHi : s.cta} <ArrowRight size={16} /></motion.a>}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {country === 'india' && electionData.india.importantForms && (
-          <div className="forms-section">
-            <h3 className="checklist-label"><FileText size={16} /> {t.eciForms}</h3>
-            <div className="forms-table">
-              {electionData.india.importantForms.map((f, i) => (
-                <div key={i} className="forms-row"><div className="form-name">{f.form}</div><div className="form-purpose">{lang === 'hi' && f.purposeHi ? f.purposeHi : f.purpose}</div></div>
-              ))}
-            </div>
-          </div>
-        )}
-        <div style={{ textAlign: 'center' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
-      </motion.div>
-    );
-  };
-
-  const StatusCheck = () => {
-    const d = countryData.checkStatus;
-    return (
-      <motion.div key="status" variants={fade} initial="hidden" animate="show" exit="exit" className="status-card">
-        <Search className="icon-main" size={44} strokeWidth={1.5} />
-        <h2 className="question-text">{lang === 'hi' && d.titleHi ? d.titleHi : d.title}</h2>
-        <p className="status-desc">{lang === 'hi' && d.contentHi ? d.contentHi : d.content}</p>
-        {d.link && <motion.a whileHover={{ scale: 1.03 }} href={d.link} target="_blank" rel="noopener noreferrer" className="cta-btn large">{lang === 'hi' && d.ctaHi ? d.ctaHi : d.cta} <ArrowRight size={18} /></motion.a>}
-        <button className="btn-ghost" onClick={reset}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.backHome}</button>
-      </motion.div>
-    );
-  };
-
-  const ReadyToVote = () => {
-    const d = countryData.readyToVote;
-    return (
-      <motion.div key="ready" variants={fade} initial="hidden" animate="show" exit="exit" className="ready-container">
-        <div className="section-header">
-          <CheckCircle2 className="icon-section" size={22} style={{ color: 'var(--accent-green)' }} /><h2 className="section-title">{t.votingPrep}</h2>
-          <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(d.beforeChecklist.map(i => i.label).join('. '))} title="Voice">{speaking ? t.voiceStop : t.voiceMode}</button>
-        </div>
-        {d.beforeChecklist && (
-          <div className="checklist-section">
-            <div className="checklist-label">{t.beforeVoting}</div>
-            <div className="checklist-card">
-              {d.beforeChecklist.map((item, i) => { const id = `before-${i}`; return (
-                <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
-                  <span className="check-icon">{item.icon}</span>
-                  <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
-                  <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
-                </motion.div>
-              ); })}
-            </div>
-          </div>
-        )}
-        {d.onDayChecklist && (
-          <div className="checklist-section">
-            <div className="checklist-label">{t.onVotingDay}</div>
-            <div className="checklist-card">
-              {d.onDayChecklist.map((item, i) => { const id = `onday-${i}`; return (
-                <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
-                  <span className="check-icon">{item.icon}</span>
-                  <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
-                  <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
-                </motion.div>
-              ); })}
-            </div>
-          </div>
-        )}
-        {d.tips && (
-          <div className="tips-section"><div className="checklist-label">{t.proTips}</div>
-            <div className="tips-grid">{d.tips.map((tip, i) => (
-              <motion.div whileHover={{ y: -3 }} key={i} className="tip-card">
-                <h4>{lang === 'hi' && tip.titleHi ? tip.titleHi : tip.title}</h4>
-                <p>{lang === 'hi' && tip.contentHi ? tip.contentHi : tip.content}</p>
-              </motion.div>
-            ))}</div>
-          </div>
-        )}
-        {/* Pledge Section */}
-        {!showPledge ? (
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="pledge-section">
-            <div className="pledge-card">
-              <h3 className="section-title">{t.takePledge}</h3>
-              <p className="section-subtitle">{t.pledgeDesc}</p>
-              <input 
-                type="text" 
-                className="name-input" 
-                placeholder={t.enterName} 
-                value={userName} 
-                onChange={(e) => setUserName(e.target.value)} 
-              />
-              <br />
-              <button 
-                className="btn-cert" 
-                onClick={() => userName.trim() && setShowPledge(true)}
-                disabled={!userName.trim()}
-              >
-                {t.generateCert}
-              </button>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="certificate-wrapper">
-            <div className="certificate">
-              <div className="cert-header">
-                <div className="cert-title">{t.pledgeTitle}</div>
-              </div>
-              <div className="cert-body">
-                <div className="cert-name">{userName}</div>
-                <p className="cert-text">{t.pledgeText}</p>
-              </div>
-              <div className="cert-footer">
-                <div className="cert-seal">
-                  <Vote size={32} />
-                </div>
-                <div className="cert-badge">
-                  {t.responsibleVoter}<br />
-                  {new Date().toLocaleDateString()}
-                </div>
-              </div>
-            </div>
-            <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{t.downloadCert}</p>
-          </motion.div>
-        )}
-
-        {/* Share Button */}
-        <div style={{ textAlign: 'center' }}>
-          <motion.button whileHover={{ scale: 1.05 }} className={`share-btn ${copied ? 'copied' : ''}`} onClick={handleShare}>
-            <Share2 size={16} /> {copied ? t.shareCopied : t.shareCard}
-          </motion.button>
-        </div>
-        <div style={{ textAlign: 'center', marginTop: '10px' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
-      </motion.div>
-    );
-  };
-
-  /* ---------- STATE CARD ---------- */
-  const stateInfo = statesData[selectedState];
-
-  /* ---------- RENDER ---------- */
   return (
     <div className={`app-container ${ready ? 'ready' : ''}`}>
       <header className="header">
@@ -322,22 +325,28 @@ function App() {
               {electionData.quickFacts.map((s, i) => (<div key={i} className="stat-item"><div className="stat-number">{s.stat}</div><div className="stat-label">{lang === 'hi' && s.labelHi ? s.labelHi : s.label}</div></div>))}
             </motion.div>
           )}
-
-          {/* COUNTDOWN TIMER — isolated component, no parent re-render */}
           {step === 'initial' && <CountdownTimer lang={lang} />}
         </section>
 
         <div className="interaction-wrapper">
           <AnimatePresence mode="wait">
-            {step === 'initial' && <Initial />}
-            {step === 'registrationStatus' && <RegStatus />}
-            {step === 'registrationGuide' && <Guide />}
-            {step === 'checkStatus' && <StatusCheck />}
-            {step === 'readyToVote' && <ReadyToVote />}
+            {step === 'initial' && <Initial t={t} pick={pick} />}
+            {step === 'registrationStatus' && <RegStatus t={t} pick={pick} setStep={setStep} regLabels={regLabels} />}
+            {step === 'registrationGuide' && <Guide t={t} lang={lang} countryData={countryData} simpleMode={simpleMode} speak={speak} reset={reset} speaking={speaking} />}
+            {step === 'checkStatus' && <StatusCheck t={t} lang={lang} countryData={countryData} reset={reset} />}
+            {step === 'readyToVote' && (
+              <ReadyToVote 
+                t={t} lang={lang} countryData={countryData} 
+                checked={checked} toggle={toggle} speak={speak} 
+                speaking={speaking} reset={reset} userName={userName} 
+                setUserName={setUserName} showPledge={showPledge} 
+                setShowPledge={setShowPledge} handleShare={handleShare} 
+                copied={copied} 
+              />
+            )}
           </AnimatePresence>
         </div>
 
-        {/* BOOTH FINDER + STATE GUIDE */}
         {step !== 'initial' && country === 'india' && (
           <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="booth-section">
             <h2 className="section-title center"><MapPin size={20} style={{ verticalAlign: 'middle' }} /> {t.boothFinder}</h2>
@@ -365,7 +374,6 @@ function App() {
           </motion.section>
         )}
 
-        {/* DEEP DIVE */}
         {step !== 'initial' && (
           <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="deep-dive">
             <h2 className="section-title center">{t.resources}</h2>
