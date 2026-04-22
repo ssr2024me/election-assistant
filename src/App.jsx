@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon } from 'lucide-react';
+import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Volume2, Timer } from 'lucide-react';
 import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
+import { statesData, nextElectionInfo } from './data/statesData';
 
 function App() {
   const [step, setStep] = useState('initial');
@@ -13,10 +14,32 @@ function App() {
   const [checked, setChecked] = useState({});
   const [lang, setLang] = useState('en');
   const [theme, setTheme] = useState('dark');
+  const [selectedState, setSelectedState] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   const t = translations[lang];
   useEffect(() => { setReady(true); }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
+
+  // Countdown timer
+  useEffect(() => {
+    const target = new Date(nextElectionInfo.date).getTime();
+    const tick = () => {
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+      setCountdown({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000)
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const pick = (nextStep, key, value) => {
     setChoices(p => ({ ...p, [key]: value }));
@@ -29,11 +52,36 @@ function App() {
   const country = choices.country || 'general';
   const countryData = electionData[country];
 
+  // Voice Mode
+  const speak = (text) => {
+    if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
+    u.rate = 0.9;
+    u.onend = () => setSpeaking(false);
+    setSpeaking(true);
+    window.speechSynthesis.speak(u);
+  };
+
+  // Share
+  const handleShare = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try { await navigator.share({ title: t.shareTitle, text: t.shareText, url }); } catch (e) {}
+    } else {
+      navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
   const stagger = { hidden: { opacity: 0, x: -16 }, show: (i) => ({ opacity: 1, x: 0, transition: { delay: i * 0.08, duration: 0.35 } }) };
 
-  const countryLabels = { en: [t.india, t.usa, t.other], hi: [t.india, t.usa, t.other] };
+  const countryLabels = [t.india, t.usa, t.other];
   const regLabels = [t.regYes, t.regNo, t.regUnsure];
+
+  /* ---------- SCREENS ---------- */
 
   const Initial = () => (
     <motion.div key="init" variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
@@ -42,7 +90,7 @@ function App() {
       <div className="options-grid">
         {electionData.initial.options.map((o, i) => (
           <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} key={o.value} className="option-btn" onClick={() => pick(o.next, 'country', o.value)}>
-            {countryLabels[lang][i]}
+            {countryLabels[i]}
           </motion.button>
         ))}
       </div>
@@ -66,9 +114,13 @@ function App() {
 
   const Guide = () => {
     const guide = countryData.registrationGuide;
+    const allText = guide.map(s => lang === 'hi' && s.contentHi ? s.contentHi : s.content).join('. ');
     return (
       <motion.div key="guide" variants={fade} initial="hidden" animate="show" exit="exit" className="guide-container">
-        <div className="section-header"><FileText className="icon-section" size={22} /><h2 className="section-title">{t.regRoadmap}</h2></div>
+        <div className="section-header">
+          <FileText className="icon-section" size={22} /><h2 className="section-title">{t.regRoadmap}</h2>
+          <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(allText)} title="Voice">{speaking ? t.voiceStop : t.voiceMode}</button>
+        </div>
         <div className="steps-list">
           {guide.map((s, i) => (
             <motion.div custom={i} variants={stagger} initial="hidden" animate="show" key={s.id} className="step-item">
@@ -114,7 +166,10 @@ function App() {
     const d = countryData.readyToVote;
     return (
       <motion.div key="ready" variants={fade} initial="hidden" animate="show" exit="exit" className="ready-container">
-        <div className="section-header"><CheckCircle2 className="icon-section" size={22} style={{ color: 'var(--accent-green)' }} /><h2 className="section-title">{t.votingPrep}</h2></div>
+        <div className="section-header">
+          <CheckCircle2 className="icon-section" size={22} style={{ color: 'var(--accent-green)' }} /><h2 className="section-title">{t.votingPrep}</h2>
+          <button className={`voice-btn ${speaking ? 'speaking' : ''}`} onClick={() => speak(d.beforeChecklist.map(i => i.label).join('. '))} title="Voice">{speaking ? t.voiceStop : t.voiceMode}</button>
+        </div>
         {d.beforeChecklist && (
           <div className="checklist-section">
             <div className="checklist-label">{t.beforeVoting}</div>
@@ -153,11 +208,21 @@ function App() {
             ))}</div>
           </div>
         )}
-        <div style={{ textAlign: 'center' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
+        {/* Share Button */}
+        <div style={{ textAlign: 'center' }}>
+          <motion.button whileHover={{ scale: 1.05 }} className={`share-btn ${copied ? 'copied' : ''}`} onClick={handleShare}>
+            <Share2 size={16} /> {copied ? t.shareCopied : t.shareCard}
+          </motion.button>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '10px' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
       </motion.div>
     );
   };
 
+  /* ---------- STATE CARD ---------- */
+  const stateInfo = statesData[selectedState];
+
+  /* ---------- RENDER ---------- */
   return (
     <div className={`app-container ${ready ? 'ready' : ''}`}>
       <header className="header">
@@ -190,6 +255,20 @@ function App() {
               {electionData.quickFacts.map((s, i) => (<div key={i} className="stat-item"><div className="stat-number">{s.stat}</div><div className="stat-label">{lang === 'hi' && s.labelHi ? s.labelHi : s.label}</div></div>))}
             </motion.div>
           )}
+
+          {/* COUNTDOWN TIMER */}
+          {step === 'initial' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="countdown-section">
+              <div className="countdown-label"><Timer size={13} style={{ verticalAlign: 'middle' }} /> {t.countdown}</div>
+              <div className="countdown-event">{lang === 'hi' ? nextElectionInfo.nameHi : nextElectionInfo.name}</div>
+              <div className="countdown-grid">
+                <div className="countdown-box"><div className="countdown-number">{countdown.d}</div><div className="countdown-unit">{t.days}</div></div>
+                <div className="countdown-box"><div className="countdown-number">{countdown.h}</div><div className="countdown-unit">{t.hours}</div></div>
+                <div className="countdown-box"><div className="countdown-number">{countdown.m}</div><div className="countdown-unit">{t.minutes}</div></div>
+                <div className="countdown-box"><div className="countdown-number">{countdown.s}</div><div className="countdown-unit">{t.seconds}</div></div>
+              </div>
+            </motion.div>
+          )}
         </section>
 
         <div className="interaction-wrapper">
@@ -202,6 +281,35 @@ function App() {
           </AnimatePresence>
         </div>
 
+        {/* BOOTH FINDER + STATE GUIDE */}
+        {step !== 'initial' && country === 'india' && (
+          <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="booth-section">
+            <h2 className="section-title center"><MapPin size={20} style={{ verticalAlign: 'middle' }} /> {t.boothFinder}</h2>
+            <p className="section-subtitle">{t.boothFinderDesc}</p>
+            <select className="state-select" value={selectedState} onChange={(e) => setSelectedState(e.target.value)}>
+              <option value="">{t.selectState}</option>
+              {Object.entries(statesData).map(([key, st]) => (
+                <option key={key} value={key}>{lang === 'hi' && st.nameHi ? st.nameHi : st.name}</option>
+              ))}
+            </select>
+            {stateInfo && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="state-card">
+                <div className="state-card-name">🏛️ {lang === 'hi' && stateInfo.nameHi ? stateInfo.nameHi : stateInfo.name}</div>
+                <div className="state-stats">
+                  <div className="state-stat-box"><div className="state-stat-num">{stateInfo.seats}</div><div className="state-stat-label">{t.lokSabhaSeats}</div></div>
+                  <div className="state-stat-box"><div className="state-stat-num">{stateInfo.assemblySeats}</div><div className="state-stat-label">{t.assemblySeats}</div></div>
+                  <div className="state-stat-box"><div className="state-stat-num">{stateInfo.nextElection}</div><div className="state-stat-label">{t.nextStateElection}</div></div>
+                </div>
+                <div className="state-links">
+                  <a href={stateInfo.boothLink} target="_blank" rel="noopener noreferrer" className="state-link-btn primary"><MapPin size={14} /> {t.findBooth}</a>
+                  <a href={stateInfo.ecLink} target="_blank" rel="noopener noreferrer" className="state-link-btn secondary"><Globe size={14} /> {t.visitEC}</a>
+                </div>
+              </motion.div>
+            )}
+          </motion.section>
+        )}
+
+        {/* DEEP DIVE */}
         {step !== 'initial' && (
           <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="deep-dive">
             <h2 className="section-title center">{t.resources}</h2>

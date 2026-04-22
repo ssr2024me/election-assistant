@@ -48,6 +48,29 @@ export const translations = {
 
     // Status check
     backHome: "Start Over",
+
+    // New Features
+    countdown: "Next Election",
+    days: "Days",
+    hours: "Hours",
+    minutes: "Minutes",
+    seconds: "Seconds",
+    boothFinder: "Find Your Booth",
+    boothFinderDesc: "Select your state to find your polling booth and Election Commission website.",
+    selectState: "-- Select Your State --",
+    lokSabhaSeats: "Lok Sabha Seats",
+    assemblySeats: "Assembly Seats",
+    visitEC: "Visit Election Commission",
+    findBooth: "Find Polling Booth",
+    nextStateElection: "Next Election",
+    shareCard: "Share",
+    shareTitle: "I'm ready to vote! 🗳️",
+    shareText: "I used Election Assistant to prepare for voting day. Check it out!",
+    shareCopied: "Link Copied! ✅",
+    voiceMode: "🔊",
+    voiceStop: "⏹️",
+    stateGuide: "State Guide",
+    stateGuideDesc: "Select your state for specific election info.",
   },
   hi: {
     // Header
@@ -96,5 +119,28 @@ export const translations = {
     footerVerify: "हमेशा ECI / स्थानीय स्रोतों से सत्यापित करें",
 
     backHome: "शुरू से शुरू करें",
+
+    // New Features
+    countdown: "अगला चुनाव",
+    days: "दिन",
+    hours: "घंटे",
+    minutes: "मिनट",
+    seconds: "सेकंड",
+    boothFinder: "अपना बूथ खोजें",
+    boothFinderDesc: "अपना राज्य चुनें और अपना मतदान केंद्र व चुनाव आयोग वेबसाइट खोजें।",
+    selectState: "-- अपना राज्य चुनें --",
+    lokSabhaSeats: "लोकसभा सीटें",
+    assemblySeats: "विधानसभा सीटें",
+    visitEC: "चुनाव आयोग वेबसाइट",
+    findBooth: "मतदान केंद्र खोजें",
+    nextStateElection: "अगला चुनाव",
+    shareCard: "शेयर करें",
+    shareTitle: "मैं वोट देने के लिए तैयार हूँ! 🗳️",
+    shareText: "मैंने Election Assistant से मतदान की तैयारी की। आप भी देखें!",
+    shareCopied: "लिंक कॉपी हो गया! ✅",
+    voiceMode: "🔊",
+    voiceStop: "⏹️",
+    stateGuide: "राज्य गाइड",
+    stateGuideDesc: "अपने राज्य की चुनाव जानकारी के लिए राज्य चुनें।",
   }
 };
