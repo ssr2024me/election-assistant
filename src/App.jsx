@@ -198,6 +198,7 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="certificate-wrapper">
           <div className="certificate">
             <div className="cert-header">
+              <div style={{ fontSize: '0.7rem', color: '#c2410c', fontWeight: 800, marginBottom: '5px' }}>{t.digitalPledge}</div>
               <div className="cert-title">{t.pledgeTitle}</div>
             </div>
             <div className="cert-body">
@@ -212,6 +213,9 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
                 {t.responsibleVoter}<br />
                 {new Date().toLocaleDateString()}
               </div>
+            </div>
+            <div style={{ marginTop: '1.5rem', fontSize: '0.65rem', color: '#94a3b8', borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
+              {t.nonOfficial}
             </div>
           </div>
           <p style={{ marginTop: '1.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{t.downloadCert}</p>

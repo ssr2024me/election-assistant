@@ -81,6 +81,8 @@ export const translations = {
     pledgeText: "I, having faith in democracy, hereby pledge to uphold the democratic traditions of my country and the dignity of free, fair and peaceful elections, and to vote in every election fearlessly and without being influenced by considerations of religion, race, caste, community, language or any inducement.",
     downloadCert: "📸 Screenshot to Share",
     responsibleVoter: "Responsible Voter 2026",
+    digitalPledge: "Self-Generated Digital Pledge",
+    nonOfficial: "Digital awareness tool. Not a government document.",
     
     // Official Tools
     officialTools: "Official ECI Tools",
@@ -175,6 +177,8 @@ export const translations = {
     pledgeText: "हम, भारत के नागरिक, लोकतंत्र में अपनी पूर्ण आस्था रखते हुए यह शपथ लेते हैं कि हम अपने देश की लोकतांत्रिक परम्पराओं की मर्यादा को बनाए रखेंगे तथा स्वतंत्र, निष्पक्ष एवं शांतिपूर्ण निर्वाचन की गरिमा को अक्षुण्ण रखते हुए, निर्भीक होकर, धर्म, वर्ग, जाति, समुदाय, भाषा अथवा अन्य किसी भी प्रलोभन से प्रभावित हुए बिना सभी निर्वाचनों में अपने मताधिकार का प्रयोग करेंगे।",
     downloadCert: "📸 स्क्रीनशॉट लेकर शेयर करें",
     responsibleVoter: "जिम्मेदार मतदाता 2026",
+    digitalPledge: "स्व-जनित डिजिटल शपथ",
+    nonOfficial: "डिजिटल जागरूकता टूल। सरकारी दस्तावेज़ नहीं।",
     
     // Official Tools
     officialTools: "आधिकारिक ECI टूल्स",
