@@ -12,6 +12,10 @@
 
 .app-container.ready {
   opacity: 1;
+  background-image: linear-gradient(rgba(11, 15, 26, 0.85), rgba(11, 15, 26, 0.85)), url('/election-assistant/election-bg.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
 }
 
 /* Ambient glow background */
@@ -1030,6 +1034,10 @@
   background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .app-container.ready {
+  background-image: linear-gradient(rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.94)), url('/election-assistant/election-bg.png');
 }
 
 [data-theme="light"] .app-container::before {
