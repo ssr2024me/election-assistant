@@ -249,7 +249,6 @@ function App() {
   useEffect(() => { setReady(true); }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
 
-  // Sync with browser back button
   useEffect(() => {
     const handlePopState = (e) => {
       if (e.state && e.state.step) {
@@ -259,6 +258,12 @@ function App() {
       }
     };
     window.addEventListener('popstate', handlePopState);
+    
+    // Push initial state on mount so back works from step 2
+    if (!window.history.state) {
+      window.history.replaceState({ step: 'initial' }, '');
+    }
+    
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
@@ -270,10 +275,6 @@ function App() {
   };
 
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
-  
-  const goBack = () => {
-    window.history.back();
-  };
   
   const reset = () => { 
     setStep('initial'); 
@@ -319,7 +320,6 @@ function App() {
         <div className="container header-inner">
           <div className="logo-area">
             <button className="home-btn" onClick={reset} title="Home"><Home size={18} /></button>
-            {step !== 'initial' && <button className="home-btn" onClick={goBack} title="Back"><ChevronLeft size={18} /></button>}
             <div className="logo-badge"><Vote size={22} /></div>
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
           </div>
