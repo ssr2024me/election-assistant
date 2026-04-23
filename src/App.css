@@ -1630,3 +1630,55 @@
 .tool-card.helpline .tool-action-btn {
   color: var(--accent-saffron);
 }
+
+/* ==============================
+   SMART ADVICE CARD
+================================ */
+.smart-advice-card {
+  max-width: 600px;
+  margin: 0 auto 1.5rem;
+  background: rgba(79, 125, 245, 0.05);
+  border: 1px solid rgba(79, 125, 245, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.smart-advice-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent-blue);
+}
+
+.advice-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.smart-advice-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+[data-theme="light"] .smart-advice-card {
+  background: rgba(79, 125, 245, 0.03);
+  border-color: rgba(79, 125, 245, 0.1);
+}
+

@@ -318,6 +318,16 @@ function App() {
   const stateInfo = statesData[selectedState];
   const regLabels = [t.regYes, t.regNo, t.regUnsure];
 
+  const getSmartAdvice = () => {
+    if (step === 'initial') return t.adviceInitial;
+    if (country === 'india') {
+      if (choices.registered === 'no' || step === 'registrationGuide') return t.adviceIndiaNo;
+      return t.adviceIndiaYes;
+    }
+    if (country === 'usa') return t.adviceUSA;
+    return t.heroSubtitle;
+  };
+
   return (
     <div className={`app-container ${ready ? 'ready' : ''}`}>
       <header className="header">
@@ -353,6 +363,12 @@ function App() {
           )}
           {step === 'initial' && <CountdownTimer lang={lang} />}
         </section>
+
+        {/* SMART ADVICE CARD */}
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
+          <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
+          <p>{getSmartAdvice()}</p>
+        </motion.div>
 
         <div className="interaction-wrapper">
           <AnimatePresence mode="wait">

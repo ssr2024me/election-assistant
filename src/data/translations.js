@@ -72,6 +72,13 @@ export const translations = {
     stateGuide: "State Guide",
     stateGuideDesc: "Select your state for specific election info.",
     
+    // Smart Advice
+    smartAdvice: "Smart AI Advice",
+    adviceInitial: "Please select your country to receive personalized voting guidance.",
+    adviceIndiaNo: "Based on your status, you should focus on Form 6 registration. The next election is approaching!",
+    adviceIndiaYes: "You are ready! Ensure your name is in the electoral roll and locate your polling booth below.",
+    adviceUSA: "Follow the state-specific deadlines for mail-in or in-person voting.",
+    
     // Pledge
     takePledge: "📜 Take the Voter Pledge",
     pledgeTitle: "Voter Pledge Certificate",
@@ -167,6 +174,13 @@ export const translations = {
     voiceStop: "⏹️",
     stateGuide: "राज्य गाइड",
     stateGuideDesc: "अपने राज्य की चुनाव जानकारी के लिए राज्य चुनें।",
+    
+    // Smart Advice
+    smartAdvice: "स्मार्ट AI सलाह",
+    adviceInitial: "व्यक्तिगत मतदान मार्गदर्शन प्राप्त करने के लिए कृपया अपना देश चुनें।",
+    adviceIndiaNo: "आपकी स्थिति के आधार पर, आपको फॉर्म 6 पंजीकरण पर ध्यान देना चाहिए। अगला चुनाव नजदीक है!",
+    adviceIndiaYes: "आप तैयार हैं! मतदाता सूची में अपना नाम जांचें और नीचे अपना मतदान केंद्र खोजें।",
+    adviceUSA: "मेल-इन या व्यक्तिगत मतदान के लिए राज्य-विशिष्ट समय सीमा का पालन करें।",
     
     // Pledge
     takePledge: "📜 मतदाता शपथ लें",

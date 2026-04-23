@@ -108,4 +108,28 @@ This project is open source and available for educational purposes.
 
 ---
 
+---
+
+## 🎯 Challenge Submission Details
+
+### Chosen Vertical: **Smart Civic & Educational Assistant**
+This project aims to bridge the gap between complex electoral laws and the common citizen by providing a simplified, interactive, and personalized journey.
+
+### 🧠 Approach & Logic
+- **Context-Aware Pathing**: The app dynamically changes its flow based on user input. For example, if a user is not registered, it prioritizes the "Registration Roadmap"; if already registered, it shifts to "Voting Day Prep."
+- **Smart Decision Making**: Uses conditional logic to provide state-specific information (seats, booth links, next election dates) from a centralized data layer.
+- **Bilingual Accessibility**: Designed to be inclusive of India's linguistic diversity.
+
+### ⚙️ Google Services Integration
+- **Google Fonts Platform**: Uses 'Inter' and 'Outfit' for premium typography.
+- **Google Maps Integration**: Deep-linked polling booth locators for all major Indian states.
+- **Built with Google Antigravity**: Developed using Google's next-gen AI agentic coding tool.
+
+### 📝 Assumptions Made
+- The user is an Indian citizen (though global options are provided).
+- The user has basic internet access to follow external official links.
+- Data for future elections (2026-2030) is based on the standard 5-year legislative cycle.
+
+---
+
 **Made with ❤️ for a Stronger Democracy**
