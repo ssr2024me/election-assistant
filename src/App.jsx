@@ -5,6 +5,7 @@ import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
 import { statesData, getNextElection } from './data/statesData';
+import SmartExpert from './components/SmartExpert';
 
 // --- SUB-COMPONENTS (Outside main App to prevent focus loss) ---
 
@@ -329,10 +330,10 @@ function App() {
   };
 
   return (
-    <div className={`app-container ${ready ? 'ready' : ''}`}>
-      <header className="header">
-        <div className="container header-inner">
-          <div className="logo-area">
+    <div className={`app-container ${ready ? 'ready' : ''}`} role="main">
+      <header className="header" role="banner">
+        <div className="container header-content">
+          <div className="logo-section" aria-label="Election Assistant Logo">
             <button className="home-btn" onClick={reset} title="Home"><Home size={18} /></button>
             <div className="logo-badge"><Vote size={22} /></div>
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
@@ -480,9 +481,14 @@ function App() {
             </a>
           </div>
         </motion.section>
+
+        {/* SMART AI EXPERT (GEMINI SIMULATION) */}
+        <section className="container" aria-label="Smart AI Chat">
+          <SmartExpert t={t} lang={lang} userContext={{ country, state: selectedState, registered: choices.registered }} />
+        </section>
       </main>
 
-      <footer className="footer"><div className="container">
+      <footer className="footer" role="contentinfo"><div className="container">
         <div className="footer-main"><Vote size={14} /> {t.footerCopy}</div>
         <div className="footer-links"><span>{t.footerNon}</span><span className="footer-dot">•</span><span>{t.footerEdu}</span><span className="footer-dot">•</span><span>{t.footerVerify}</span></div>
       </div></footer>
