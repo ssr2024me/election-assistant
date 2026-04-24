@@ -340,13 +340,14 @@ function App() {
           )}
           {step === 'initial' && <CountdownTimer t={t} lang={lang} />}
         </section>
-
         {/* SMART ADVICE & EVM GUIDE */}
         <div className="advice-grid">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
-            <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
-            <p>{getSmartAdvice()}</p>
-          </motion.div>
+          {getSmartAdvice() && (
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
+              <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
+              <p>{getSmartAdvice()}</p>
+            </motion.div>
+          )}
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <EVMGuide t={t} lang={lang} />
           </motion.div>

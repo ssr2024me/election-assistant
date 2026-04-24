@@ -74,7 +74,7 @@ export const translations = {
     
     // Smart Advice
     smartAdvice: "Smart AI Advice",
-    adviceInitial: "Please select your country to receive personalized voting guidance.",
+    adviceInitial: "",
     adviceIndiaNo: "Based on your status, you should focus on Form 6 registration. The next election is approaching!",
     adviceIndiaYes: "You are ready! Ensure your name is in the electoral roll and locate your polling booth below.",
     adviceUSA: "Follow the state-specific deadlines for mail-in or in-person voting.",

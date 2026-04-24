@@ -23,18 +23,21 @@ const CountdownTimer = ({ t, lang }) => {
   }, []);
 
   return (
-    <div className="countdown-grid" role="timer" aria-label="Election Countdown">
-      {[
-        { val: timeLeft.days, label: t.days },
-        { val: timeLeft.hours, label: t.hours },
-        { val: timeLeft.minutes, label: t.mins },
-        { val: timeLeft.seconds, label: t.secs }
-      ].map((item, idx) => (
-        <div key={idx} className="timer-item">
-          <span className="timer-val">{item.val}</span>
-          <span className="timer-label">{item.label}</span>
-        </div>
-      ))}
+    <div className="countdown-container">
+      <div className="countdown-title">🗳️ {t.countdown}: <span className="election-name">Lok Sabha Election 2026</span></div>
+      <div className="countdown-grid" role="timer" aria-label="Election Countdown">
+        {[
+          { val: timeLeft.days, label: t.days },
+          { val: timeLeft.hours, label: t.hours },
+          { val: timeLeft.minutes, label: t.minutes },
+          { val: timeLeft.seconds, label: t.seconds }
+        ].map((item, idx) => (
+          <div key={idx} className="timer-item">
+            <span className="timer-val">{item.val}</span>
+            <span className="timer-label">{item.label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
