@@ -306,7 +306,7 @@ function App() {
   };
 
   return (
-    <div className={`app-container ${ready ? 'ready' : ''}`} role="main">
+    <div className={`app-container ${ready ? 'ready' : ''} v2`} role="main">
       <header className="header" role="banner">
         <div className="container header-content">
           <div className="logo-section" aria-label="Election Assistant Logo">
