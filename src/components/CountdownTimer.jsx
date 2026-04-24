@@ -24,7 +24,7 @@ const CountdownTimer = ({ t, lang }) => {
 
   return (
     <div className="countdown-container">
-      <div className="countdown-title">🗳️ {t.countdown}: <span className="election-name">Lok Sabha Election 2026</span></div>
+      <div className="countdown-title">🗳️ {t.countdown}: <span className="election-name">{lang === 'hi' ? (election.nameHi || election.name) : election.name}</span></div>
       <div className="countdown-grid" role="timer" aria-label="Election Countdown">
         {[
           { val: timeLeft.days, label: t.days },

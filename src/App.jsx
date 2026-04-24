@@ -338,17 +338,17 @@ function App() {
               {electionData.quickFacts.map((s, i) => (<div key={i} className="stat-item"><div className="stat-number">{s.stat}</div><div className="stat-label">{lang === 'hi' && s.labelHi ? s.labelHi : s.label}</div></div>))}
             </motion.div>
           )}
-          {step === 'initial' && <CountdownTimer t={t} lang={lang} />}
+          {step === 'initial' && <CountdownTimer t={t} lang={lang} election={getNextElection()} />}
         </section>
         {/* SMART ADVICE & EVM GUIDE */}
-        <div className="advice-grid">
+        <div className={`advice-grid ${step === 'initial' ? 'centered' : ''}`}>
           {getSmartAdvice() && (
             <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
               <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
               <p>{getSmartAdvice()}</p>
             </motion.div>
           )}
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={step === 'initial' ? { maxWidth: '500px', margin: '0 auto' } : {}}>
             <EVMGuide t={t} lang={lang} />
           </motion.div>
         </div>
