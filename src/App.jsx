@@ -8,6 +8,7 @@ import { statesData, getNextElection } from './data/statesData';
 import SmartExpert from './components/SmartExpert';
 import CountdownTimer from './components/CountdownTimer';
 import OfficialTools from './components/OfficialTools';
+import EVMGuide from './components/EVMGuide';
 
 // --- SUB-COMPONENTS (Modularized) ---
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
@@ -426,6 +427,11 @@ function App() {
           <h2 className="section-title center">{t.officialTools}</h2>
           <p className="section-subtitle">{t.officialToolsSub}</p>
           <OfficialTools t={t} />
+        </section>
+
+        {/* INTERACTIVE EVM GUIDE SECTION */}
+        <section className="container" style={{ marginTop: '3rem' }}>
+          <EVMGuide t={t} lang={lang} />
         </section>
 
         {/* SMART AI EXPERT (GEMINI SIMULATION) */}
