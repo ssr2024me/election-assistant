@@ -109,13 +109,15 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
         <div className="checklist-section">
           <div className="checklist-label">{t.beforeVoting}</div>
           <div className="checklist-card">
-            {d.beforeChecklist.map((item, i) => { const id = `before-${i}`; return (
-              <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
-                <span className="check-icon">{item.icon}</span>
-                <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
-                <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
-              </motion.div>
-            ); })}
+            {d.beforeChecklist.map((item, i) => {
+              const id = `before-${i}`; return (
+                <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
+                  <span className="check-icon">{item.icon}</span>
+                  <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
+                  <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -123,13 +125,15 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
         <div className="checklist-section">
           <div className="checklist-label">{t.onVotingDay}</div>
           <div className="checklist-card">
-            {d.onDayChecklist.map((item, i) => { const id = `onday-${i}`; return (
-              <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
-                <span className="check-icon">{item.icon}</span>
-                <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
-                <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
-              </motion.div>
-            ); })}
+            {d.onDayChecklist.map((item, i) => {
+              const id = `onday-${i}`; return (
+                <motion.div whileTap={{ x: 4 }} key={id} className="check-item" onClick={() => toggle(id)}>
+                  <span className="check-icon">{item.icon}</span>
+                  <div className={`check-box ${checked[id] ? 'done' : ''}`}>{checked[id] && <CheckCircle2 size={14} />}</div>
+                  <span className={`check-label ${checked[id] ? 'done' : ''}`}>{lang === 'hi' && item.labelHi ? item.labelHi : item.label}</span>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -150,16 +154,16 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
           <div className="pledge-card">
             <h3 className="section-title">{t.takePledge}</h3>
             <p className="section-subtitle">{t.pledgeDesc}</p>
-            <input 
-              type="text" 
-              className="name-input" 
-              placeholder={t.enterName} 
-              value={userName} 
-              onChange={(e) => setUserName(e.target.value)} 
+            <input
+              type="text"
+              className="name-input"
+              placeholder={t.enterName}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
             <br />
-            <button 
-              className="btn-cert" 
+            <button
+              className="btn-cert"
               onClick={() => userName.trim() && setShowPledge(true)}
               disabled={!userName.trim()}
             >
@@ -235,12 +239,12 @@ function App() {
       }
     };
     window.addEventListener('popstate', handlePopState);
-    
+
     // Push initial state on mount so back works from step 2
     if (!window.history.state) {
       window.history.replaceState({ step: 'initial' }, '');
     }
-    
+
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
@@ -252,12 +256,12 @@ function App() {
   };
 
   const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
-  
-  const reset = () => { 
-    setStep('initial'); 
-    setChoices({}); 
-    setChecked({}); 
-    setShowPledge(false); 
+
+  const reset = () => {
+    setStep('initial');
+    setChoices({});
+    setChecked({});
+    setShowPledge(false);
     setUserName('');
     window.history.pushState({ step: 'initial' }, ''); // Reset history
   };
@@ -280,7 +284,7 @@ function App() {
   const handleShare = async () => {
     const url = window.location.href;
     if (navigator.share) {
-      try { await navigator.share({ title: t.shareTitle, text: t.shareText, url }); } catch (e) {}
+      try { await navigator.share({ title: t.shareTitle, text: t.shareText, url }); } catch (e) { }
     } else {
       navigator.clipboard.writeText(url);
       setCopied(true);
@@ -334,7 +338,7 @@ function App() {
               {electionData.quickFacts.map((s, i) => (<div key={i} className="stat-item"><div className="stat-number">{s.stat}</div><div className="stat-label">{lang === 'hi' && s.labelHi ? s.labelHi : s.label}</div></div>))}
             </motion.div>
           )}
-          {step === 'initial' && <CountdownTimer lang={lang} />}
+          {step === 'initial' && <CountdownTimer t={t} lang={lang} />}
         </section>
 
         {/* SMART ADVICE & EVM GUIDE */}
@@ -355,13 +359,13 @@ function App() {
             {step === 'registrationGuide' && <Guide t={t} lang={lang} countryData={countryData} simpleMode={simpleMode} speak={speak} reset={reset} speaking={speaking} />}
             {step === 'checkStatus' && <StatusCheck t={t} lang={lang} countryData={countryData} reset={reset} />}
             {step === 'readyToVote' && (
-              <ReadyToVote 
-                t={t} lang={lang} countryData={countryData} 
-                checked={checked} toggle={toggle} speak={speak} 
-                speaking={speaking} reset={reset} userName={userName} 
-                setUserName={setUserName} showPledge={showPledge} 
-                setShowPledge={setShowPledge} handleShare={handleShare} 
-                copied={copied} 
+              <ReadyToVote
+                t={t} lang={lang} countryData={countryData}
+                checked={checked} toggle={toggle} speak={speak}
+                speaking={speaking} reset={reset} userName={userName}
+                setUserName={setUserName} showPledge={showPledge}
+                setShowPledge={setShowPledge} handleShare={handleShare}
+                copied={copied}
               />
             )}
           </AnimatePresence>
