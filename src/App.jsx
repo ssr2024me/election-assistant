@@ -337,11 +337,16 @@ function App() {
           {step === 'initial' && <CountdownTimer lang={lang} />}
         </section>
 
-        {/* SMART ADVICE CARD */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
-          <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
-          <p>{getSmartAdvice()}</p>
-        </motion.div>
+        {/* SMART ADVICE & EVM GUIDE */}
+        <div className="advice-grid">
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="smart-advice-card">
+            <div className="advice-tag"><Sparkles size={12} /> {t.smartAdvice}</div>
+            <p>{getSmartAdvice()}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+            <EVMGuide t={t} lang={lang} />
+          </motion.div>
+        </div>
 
         <div className="interaction-wrapper">
           <AnimatePresence mode="wait">
@@ -366,6 +371,11 @@ function App() {
           <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="booth-section">
             <h2 className="section-title center"><MapPin size={20} style={{ verticalAlign: 'middle' }} /> {t.boothFinder}</h2>
             <p className="section-subtitle">{t.boothFinderDesc}</p>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <a href="https://www.google.com/maps/search/polling+booth+near+me" target="_blank" rel="noopener noreferrer" className="cta-btn small">
+                <MapPin size={14} /> {lang === 'hi' ? 'नजदीकी मतदान केंद्र (Google Maps)' : 'Nearby Booth on Google Maps'}
+              </a>
+            </div>
             <select className="state-select" value={selectedState} onChange={(e) => setSelectedState(e.target.value)}>
               <option value="">{t.selectState}</option>
               {Object.entries(statesData).map(([key, st]) => (
@@ -427,11 +437,6 @@ function App() {
           <h2 className="section-title center">{t.officialTools}</h2>
           <p className="section-subtitle">{t.officialToolsSub}</p>
           <OfficialTools t={t} />
-        </section>
-
-        {/* INTERACTIVE EVM GUIDE SECTION */}
-        <section className="container" style={{ marginTop: '3rem' }}>
-          <EVMGuide t={t} lang={lang} />
         </section>
 
         {/* SMART AI EXPERT (GEMINI SIMULATION) */}

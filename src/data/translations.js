@@ -103,14 +103,6 @@ export const translations = {
     kycApp: "KYC App",
     kycAppDesc: "Know your candidate's profile and criminal record.",
     visitECI: "Visit ECI Website",
-    evmTitle: 'Interactive EVM & VVPAT Guide',
-    evmStep1: 'Step 1: Check the Control Unit (Green Light)',
-    evmStep2: 'Step 2: Press the Blue Button for your candidate',
-    evmStep3: 'Step 3: See the VVPAT Slip for 7 seconds',
-    evmStep4: 'Step 4: Wait for the Long Beep',
-    pressButton: 'Press Blue Button',
-    vvpatMsg: 'VVPAT Slip: Verifying your choice...',
-    beepMsg: 'LONG BEEP: Vote Successfully Recorded!',
   },
   hi: {
     // Header
@@ -214,14 +206,5 @@ export const translations = {
     kycApp: "KYC ऐप",
     kycAppDesc: "अपने उम्मीदवार की प्रोफाइल और रिकॉर्ड जानें।",
     visitECI: "ECI वेबसाइट पर जाएं",
-    accessNow: "अभी देखें",
-    evmTitle: 'इंटरएक्टिव EVM और VVPAT गाइड',
-    evmStep1: 'चरण 1: कंट्रोल यूनिट की जांच करें (हरी लाइट)',
-    evmStep2: 'चरण 2: अपने उम्मीदवार के लिए नीला बटन दबाएं',
-    evmStep3: 'चरण 3: 7 सेकंड के लिए VVPAT पर्ची देखें',
-    evmStep4: 'चरण 4: लंबी बीप का इंतजार करें',
-    pressButton: 'नीला बटन दबाएं',
-    vvpatMsg: 'VVPAT पर्ची: आपकी पसंद सत्यापित की जा रही है...',
-    beepMsg: 'लंबी बीप: वोट सफलतापूर्वक दर्ज हो गया!',
   }
 };

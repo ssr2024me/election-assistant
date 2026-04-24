@@ -1,118 +1,33 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, MousePointer2, Eye, BellRing, Info } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Info, Play } from 'lucide-react';
 
 const EVMGuide = ({ t, lang }) => {
-  const [step, setStep] = useState(1);
-  const [showSlip, setShowSlip] = useState(false);
-  const [showBeep, setShowBeep] = useState(false);
+  const [step, setStep] = useState(0);
 
-  const reset = () => {
-    setStep(1);
-    setShowSlip(false);
-    setShowBeep(false);
-  };
-
-  const handleVote = () => {
-    setStep(3);
-    setShowSlip(true);
-    setTimeout(() => {
-      setShowSlip(false);
-      setShowBeep(true);
-      setStep(4);
-    }, 7000);
-  };
+  const evmSteps = [
+    { title: "Step 1: Check the Blue Light", desc: "The Control Unit will enable the Balloting Unit. Wait for the 'Ready' lamp.", descHi: "कंट्रोल यूनिट बैलेटिंग यूनिट को सक्रिय करेगी। 'तैयार' लैंप का इंतज़ार करें।" },
+    { title: "Step 2: Press the Button", desc: "Press the blue button next to the candidate of your choice.", descHi: "अपनी पसंद के उम्मीदवार के सामने वाला नीला बटन दबाएं।" },
+    { title: "Step 3: Hear the Beep", desc: "A long beep confirms your vote is recorded.", descHi: "एक लंबी बीप पुष्टि करेगी कि आपका वोट रिकॉर्ड हो गया है।" },
+    { title: "Step 4: Verify on VVPAT", desc: "Check the VVPAT glass. A slip will be visible for 7 seconds showing your choice.", descHi: "VVPAT ग्लास देखें। आपके चयन को दिखाते हुए एक पर्ची 7 सेकंड के लिए दिखाई देगी।" }
+  ];
 
   return (
-    <div className="evm-guide-container">
-      <div className="section-header">
-        <Cpu className="icon-section" size={22} /><h2 className="section-title">{t.evmTitle}</h2>
-      </div>
-
-      <div className="evm-interface">
-        {/* Step Indicator */}
-        <div className="evm-steps-indicator">
-          {[1, 2, 3, 4].map(s => (
-            <div key={s} className={`step-dot ${step === s ? 'active' : ''} ${step > s ? 'done' : ''}`}>
-              {s}
-            </div>
+    <div className="evm-guide-card">
+      <div className="advice-tag"><Info size={12} /> {lang === 'hi' ? 'ईवीएम मार्गदर्शिका' : 'EVM User Guide'}</div>
+      <div className="evm-steps-container">
+        <div className="evm-step-indicator">
+          {evmSteps.map((_, i) => (
+            <div key={i} className={`indicator-dot ${i === step ? 'active' : ''}`} />
           ))}
         </div>
-
-        <div className="evm-visual-grid">
-          {/* EVM Ballot Unit */}
-          <div className="ballot-unit">
-            <div className="ballot-header">EVM BALLOT UNIT</div>
-            <div className="candidate-list">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="candidate-row">
-                  <div className="candidate-name">CANDIDATE {i}</div>
-                  <div className="candidate-symbol">🪷</div>
-                  <button 
-                    className={`blue-btn ${step === 2 ? 'glow' : ''}`}
-                    onClick={step === 2 ? handleVote : null}
-                    disabled={step !== 2}
-                  >
-                    {t.pressButton}
-                  </button>
-                  <div className={`lamp ${step === 3 ? 'on' : ''}`}></div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* VVPAT Display */}
-          <div className="vvpat-unit">
-            <div className="vvpat-header">VVPAT</div>
-            <div className="vvpat-screen">
-              <AnimatePresence>
-                {showSlip && (
-                  <motion.div 
-                    initial={{ y: -50, opacity: 0 }} 
-                    animate={{ y: 0, opacity: 1 }} 
-                    exit={{ y: 50, opacity: 0 }}
-                    className="vvpat-slip"
-                  >
-                    <div className="slip-content">
-                      <div className="slip-symbol">🪷</div>
-                      <div className="slip-text">CANDIDATE 1</div>
-                      <div className="slip-id">#001</div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              {!showSlip && !showBeep && <div className="vvpat-idle">WAITING...</div>}
-              {showBeep && <div className="vvpat-success">✅</div>}
-            </div>
-          </div>
-        </div>
-
-        {/* Dynamic Instructions */}
-        <div className="evm-instructions">
-          <motion.div key={step} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="instruction-box">
-            <Info size={16} />
-            <p>
-              {step === 1 && t.evmStep1}
-              {step === 2 && t.evmStep2}
-              {step === 3 && t.evmStep3}
-              {step === 4 && t.evmStep4}
-            </p>
-          </motion.div>
-          
-          {step === 1 && (
-            <button className="cta-btn small" onClick={() => setStep(2)}>
-              Proceed to Vote <MousePointer2 size={14} />
-            </button>
-          )}
-
-          {showBeep && (
-            <div className="beep-announcement">
-              <BellRing size={20} className="shake" />
-              <span>{t.beepMsg}</span>
-              <button className="btn-reset" onClick={reset} style={{ marginTop: '10px' }}>Try Again</button>
-            </div>
-          )}
-        </div>
+        <motion.div key={step} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="evm-step-content">
+          <h4>{evmSteps[step].title}</h4>
+          <p>{lang === 'hi' ? evmSteps[step].descHi : evmSteps[step].desc}</p>
+        </motion.div>
+        <button className="evm-next-btn" onClick={() => setStep((step + 1) % evmSteps.length)}>
+          {lang === 'hi' ? 'अगला' : 'Next Step'} <Play size={12} />
+        </button>
       </div>
     </div>
   );
