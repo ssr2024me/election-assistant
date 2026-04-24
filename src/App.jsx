@@ -305,8 +305,14 @@ function App() {
     return t.heroSubtitle;
   };
 
+  const bgUrl = `${import.meta.env.BASE_URL}election-bg.png`;
+
   return (
-    <div className={`app-container ${ready ? 'ready' : ''} v2`} role="main">
+    <div 
+      className={`app-container ${ready ? 'ready' : ''} v2`} 
+      role="main"
+      style={{ backgroundImage: `linear-gradient(rgba(11, 15, 26, 0.88), rgba(11, 15, 26, 0.88)), url(${bgUrl})` }}
+    >
       <header className="header" role="banner">
         <div className="container header-content">
           <div className="logo-section" aria-label="Election Assistant Logo">
