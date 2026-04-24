@@ -6,41 +6,12 @@ import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
 import { statesData, getNextElection } from './data/statesData';
 import SmartExpert from './components/SmartExpert';
+import CountdownTimer from './components/CountdownTimer';
+import OfficialTools from './components/OfficialTools';
 
-// --- SUB-COMPONENTS (Outside main App to prevent focus loss) ---
-
+// --- SUB-COMPONENTS (Modularized) ---
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
 const stagger = { hidden: { opacity: 0, x: -16 }, show: (i) => ({ opacity: 1, x: 0, transition: { delay: i * 0.08, duration: 0.35 } }) };
-
-function CountdownTimer({ lang }) {
-  const t = translations[lang];
-  const [cd, setCd] = useState({ d: 0, h: 0, m: 0, s: 0 });
-  const [election, setElection] = useState(getNextElection());
-  useEffect(() => {
-    const tick = () => {
-      const next = getNextElection();
-      setElection(next);
-      const diff = Math.max(0, new Date(next.date).getTime() - Date.now());
-      setCd({ d: Math.floor(diff / 86400000), h: Math.floor((diff % 86400000) / 3600000), m: Math.floor((diff % 3600000) / 60000), s: Math.floor((diff % 60000) / 1000) });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <div className="countdown-section">
-      <div className="countdown-label"><Timer size={13} style={{ verticalAlign: 'middle' }} /> {t.countdown}</div>
-      <div className="countdown-event">{lang === 'hi' ? election.nameHi : election.name}</div>
-      <div className="countdown-grid">
-        <div className="countdown-box"><div className="countdown-number">{cd.d}</div><div className="countdown-unit">{t.days}</div></div>
-        <div className="countdown-box"><div className="countdown-number">{cd.h}</div><div className="countdown-unit">{t.hours}</div></div>
-        <div className="countdown-box"><div className="countdown-number">{cd.m}</div><div className="countdown-unit">{t.minutes}</div></div>
-        <div className="countdown-box"><div className="countdown-number">{cd.s}</div><div className="countdown-unit">{t.seconds}</div></div>
-      </div>
-    </div>
-  );
-}
-
 function Initial({ t, pick }) {
   const countryLabels = [t.india, t.usa, t.other];
   return (
@@ -451,36 +422,11 @@ function App() {
         )}
 
         {/* OFFICIAL TOOLS SECTION */}
-        <motion.section initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="deep-dive" style={{ marginTop: '2rem' }}>
+        <section className="container" style={{ marginTop: '2rem' }}>
           <h2 className="section-title center">{t.officialTools}</h2>
           <p className="section-subtitle">{t.officialToolsSub}</p>
-          <div className="tools-grid">
-            <a href="tel:1950" className="tool-card helpline">
-              <div className="tool-icon-box"><Phone size={24} /></div>
-              <h4>1950 {t.callHelpline}</h4>
-              <p>{t.helplineDesc}</p>
-              <div className="tool-action-btn">{t.callHelpline} <ArrowRight size={14} /></div>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.eci.citizen" target="_blank" rel="noopener noreferrer" className="tool-card">
-              <div className="tool-icon-box"><Smartphone size={24} /></div>
-              <h4>{t.voterApp}</h4>
-              <p>{t.voterAppDesc}</p>
-              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=in.nic.eci.cvigil" target="_blank" rel="noopener noreferrer" className="tool-card">
-              <div className="tool-icon-box"><ShieldCheck size={24} /></div>
-              <h4>{t.cvigilApp}</h4>
-              <p>{t.cvigilAppDesc}</p>
-              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.eci.kyc" target="_blank" rel="noopener noreferrer" className="tool-card">
-              <div className="tool-icon-box"><UserCheck size={24} /></div>
-              <h4>{t.kycApp}</h4>
-              <p>{t.kycAppDesc}</p>
-              <div className="tool-action-btn">Install <ExternalLink size={14} /></div>
-            </a>
-          </div>
-        </motion.section>
+          <OfficialTools t={t} />
+        </section>
 
         {/* SMART AI EXPERT (GEMINI SIMULATION) */}
         <section className="container" aria-label="Smart AI Chat">

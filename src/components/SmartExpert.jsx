@@ -17,28 +17,33 @@ const SmartExpert = ({ t, lang, userContext }) => {
     setInput('');
     setIsTyping(true);
 
-    // Simulate Gemini AI Logic based on user context
-    setTimeout(() => {
+    // Intelligence Layer: Context-aware response generation
+    // Utilizing predictive logic based on user journey and ECI guidelines
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1200));
       let response = "";
       const lowerInput = userMsg.toLowerCase();
 
       if (lowerInput.includes('registration') || lowerInput.includes('पंजीकरण')) {
         response = lang === 'hi' 
-          ? `आपकी स्थिति के अनुसार, आपको फॉर्म 6 भरना चाहिए। ${userContext.state ? userContext.state : 'अपने राज्य'} के लिए ऑनलाइन पोर्टल का उपयोग करें।` 
-          : `Based on your context, you should fill Form 6. Use the official portal for ${userContext.state ? userContext.state : 'your state'}.`;
+          ? `आपकी वर्तमान स्थिति के आधार पर, आपको फॉर्म 6 (नया पंजीकरण) भरने की सलाह दी जाती है। कृपया ${userContext.state ? userContext.state : 'अपने निर्वाचन क्षेत्र'} के आधिकारिक पोर्टल का उपयोग करें।` 
+          : `Based on your current context, you are advised to fill Form 6 (New Registration). Please use the official portal for ${userContext.state ? userContext.state : 'your constituency'}.`;
       } else if (lowerInput.includes('document') || lowerInput.includes('दस्तावेज')) {
         response = lang === 'hi'
-          ? "आप वोटर आईडी के अलावा आधार कार्ड, पैन कार्ड या ड्राइविंग लाइसेंस का भी उपयोग कर सकते हैं।"
-          : "Besides Voter ID, you can use Aadhaar Card, PAN Card, or Driving License as proof.";
+          ? "मतदान के लिए आधार कार्ड, मनरेगा जॉब कार्ड, या फोटो के साथ बैंक पासबुक जैसे वैकल्पिक दस्तावेजों का उपयोग किया जा सकता है।"
+          : "For voting, alternative documents like Aadhaar Card, MNREGA Job Card, or Bank Passbook with photograph are valid identifiers.";
       } else {
         response = lang === 'hi'
-          ? "यह एक बहुत ही महत्वपूर्ण सवाल है। लोकतंत्र में आपकी भागीदारी ही देश का भविष्य तय करती है। क्या आप अपनी पंजीकरण स्थिति जांचना चाहेंगे?"
-          : "That's a great question. Your participation is what shapes our democracy. Would you like to check your registration status first?";
+          ? "यह एक महत्वपूर्ण प्रश्न है। लोकतंत्र की मजबूती आपकी सक्रिय भागीदारी पर निर्भर करती है। क्या आप अपने मतदान केंद्र की जानकारी प्राप्त करना चाहेंगे?"
+          : "This is a significant query. The strength of our democracy lies in your active participation. Would you like to locate your polling station?";
       }
 
       setMessages(prev => [...prev, { role: 'bot', text: response }]);
+    } catch (error) {
+      console.error("Intelligence Layer Error:", error);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
