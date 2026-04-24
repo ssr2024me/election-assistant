@@ -1,5 +1,5 @@
 # Step 1: Build the React app
-FROM node:18 AS build-stage
+FROM node:20 AS build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --force
