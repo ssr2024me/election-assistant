@@ -25,7 +25,8 @@
   right: -200px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(79, 125, 245, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-blue) 0.08, transparent 70%);
+  opacity: var(--glow-opacity, 0.08);
   z-index: 0;
   pointer-events: none;
 }
@@ -37,7 +38,8 @@
   left: -200px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(255, 153, 51, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent-saffron) 0.06, transparent 70%);
+  opacity: var(--glow-opacity, 0.06);
   z-index: 0;
   pointer-events: none;
 }

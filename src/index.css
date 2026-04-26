@@ -36,6 +36,7 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
   --bg-gradient: rgba(11, 15, 26, 0.92);
+  --glow-opacity: 0.15;
 }
 
 /* Light Theme */
@@ -54,7 +55,8 @@
   --glass-border: rgba(0, 0, 0, 0.08);
   --glass-border-hover: rgba(0, 0, 0, 0.15);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  --bg-gradient: rgba(248, 250, 252, 0.92);
+  --bg-gradient: rgba(248, 250, 252, 0.94);
+  --glow-opacity: 0.05;
 }
 
 * {
