@@ -52,7 +52,7 @@
   right: 0;
   z-index: 1000;
   padding: 0;
-  background: rgba(11, 15, 26, 0.9);
+  background: var(--bg-primary);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--glass-border);
@@ -315,7 +315,7 @@
 
 .option-btn {
   padding: 1.1rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
@@ -878,7 +878,7 @@
 }
 
 .myth-tag {
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--bg-card);
   color: #ef4444;
 }
 
@@ -1056,7 +1056,9 @@
 }
 
 [data-theme="light"] .app-container.ready {
-  background-image: linear-gradient(rgba(248, 250, 252, 0.96), rgba(248, 250, 252, 0.96)), url('/election-assistant/election-bg.png');
+  opacity: 1;
+  background-image: linear-gradient(var(--bg-gradient), var(--bg-gradient)), url('../election-bg.png');
+  background-attachment: fixed;
 }
 
 [data-theme="light"] .app-container::before {
