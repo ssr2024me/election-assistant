@@ -311,7 +311,7 @@ function App() {
     <div 
       className={`app-container ${ready ? 'ready' : ''} v2`} 
       role="main"
-      style={{ backgroundImage: `linear-gradient(rgba(11, 15, 26, 0.88), rgba(11, 15, 26, 0.88)), url(${bgUrl})` }}
+      style={{ backgroundImage: `linear-gradient(var(--bg-gradient), var(--bg-gradient)), url(${bgUrl})` }}
     >
       <header className="header" role="banner">
         <div className="container header-content">
