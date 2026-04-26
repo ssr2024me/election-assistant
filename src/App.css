@@ -12,6 +12,7 @@
 
 .app-container.ready {
   opacity: 1;
+  background-image: linear-gradient(var(--bg-gradient), var(--bg-gradient)), var(--bg-url, url('../election-bg.png'));
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
