@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
 import PropTypes from 'prop-types';
 /* eslint-disable no-unused-vars */
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,10 +8,12 @@ import './App.css';
 import { electionData } from './data/electionSteps';
 import { translations } from './data/translations';
 import { statesData, getNextElection } from './data/statesData';
-import SmartExpert from './components/SmartExpert';
 import CountdownTimer from './components/CountdownTimer';
-import OfficialTools from './components/OfficialTools';
-import EVMGuide from './components/EVMGuide';
+
+// Lazy load heavy components for Efficiency optimization
+const OfficialTools = lazy(() => import('./components/OfficialTools'));
+const EVMGuide = lazy(() => import('./components/EVMGuide'));
+const SmartExpert = lazy(() => import('./components/SmartExpert'));
 
 // --- SUB-COMPONENTS (Modularized) ---
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
@@ -453,12 +455,16 @@ function App() {
         <section className="container" style={{ marginTop: '2rem' }}>
           <h2 className="section-title center">{t.officialTools}</h2>
           <p className="section-subtitle">{t.officialToolsSub}</p>
-          <OfficialTools t={t} />
+          <Suspense fallback={<div className="loading-state">{t.loadingText || 'Loading...'}</div>}>
+            <OfficialTools t={t} />
+          </Suspense>
         </section>
 
         {/* SMART AI EXPERT (GEMINI SIMULATION) */}
         <section className="container" aria-label="Smart AI Chat">
-          <SmartExpert t={t} lang={lang} userContext={{ country, state: selectedState, registered: choices.registered }} />
+          <Suspense fallback={<div className="loading-state">{t.loadingText || 'Loading...'}</div>}>
+            <SmartExpert t={t} lang={lang} userContext={{ country, state: selectedState, registered: choices.registered }} />
+          </Suspense>
         </section>
       </main>
 

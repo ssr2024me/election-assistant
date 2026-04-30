@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { Sparkles, Send, Bot, User, Loader2 } from 'lucide-react';
 /* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 /* eslint-enable no-unused-vars */
+
+/**
+ * SmartExpert Component
+ * Powered by Google Gemini. Provides contextual, AI-driven responses to voter queries.
+ * @param {Object} props - Component properties
+ * @param {Object} props.t - Translation object
+ * @param {string} props.lang - Current language
+ * @param {Object} props.userContext - Information about the user's current flow state
+ */
 
 const SmartExpert = ({ t, lang, userContext }) => {
   const [input, setInput] = useState('');
