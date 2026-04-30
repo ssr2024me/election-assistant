@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Sparkles, Send, Bot, User, Loader2 } from 'lucide-react';
 /* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
@@ -97,14 +98,25 @@ const SmartExpert = ({ t, lang, userContext }) => {
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder={lang === 'hi' ? 'सवाल पूछें...' : 'Ask a question...'}
+          aria-label={lang === 'hi' ? 'अपना सवाल लिखें' : 'Type your question'}
           className="chat-input"
         />
-        <button onClick={handleSend} className="chat-send-btn">
-          <Send size={18} />
+        <button onClick={handleSend} className="chat-send-btn" aria-label="Send message">
+          <Send size={18} aria-hidden="true" />
         </button>
       </div>
     </div>
   );
+};
+
+SmartExpert.propTypes = {
+  t: PropTypes.object.isRequired,
+  lang: PropTypes.string.isRequired,
+  userContext: PropTypes.shape({
+    country: PropTypes.string,
+    state: PropTypes.string,
+    registered: PropTypes.string
+  })
 };
 
 export default SmartExpert;

@@ -1,5 +1,12 @@
 import { Phone, Smartphone, Eye, UserCheck, ExternalLink } from 'lucide-react';
+import PropTypes from 'prop-types';
 
+/**
+ * OfficialTools Component
+ * Displays official government election tools and helpline resources.
+ * @param {Object} props - Component properties
+ * @param {Object} props.t - Translation object
+ */
 const OfficialTools = ({ t }) => {
   const tools = [
     { id: 'helpline', icon: <Phone size={24} />, title: t.helplineTitle, desc: t.helplineDesc, link: "tel:1950", color: 'helpline' },
@@ -22,6 +29,10 @@ const OfficialTools = ({ t }) => {
       ))}
     </div>
   );
+};
+
+OfficialTools.propTypes = {
+  t: PropTypes.object.isRequired
 };
 
 export default OfficialTools;

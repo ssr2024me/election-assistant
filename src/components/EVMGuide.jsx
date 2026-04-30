@@ -1,9 +1,17 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 /* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
 /* eslint-enable no-unused-vars */
 import { Info, Play } from 'lucide-react';
 
+/**
+ * EVMGuide Component
+ * Interactive step-by-step guide for using Electronic Voting Machines (EVM).
+ * @param {Object} props - Component properties
+ * @param {Object} props.t - Translation object
+ * @param {string} props.lang - Current language code ('en' or 'hi')
+ */
 const EVMGuide = ({ lang }) => {
   const [step, setStep] = useState(0);
 
@@ -27,12 +35,17 @@ const EVMGuide = ({ lang }) => {
           <h4>{lang === 'hi' ? evmSteps[step].titleHi : evmSteps[step].title}</h4>
           <p>{lang === 'hi' ? evmSteps[step].descHi : evmSteps[step].desc}</p>
         </motion.div>
-        <button className="evm-next-btn" onClick={() => setStep((step + 1) % evmSteps.length)}>
-          {lang === 'hi' ? 'अगला' : 'Next Step'} <Play size={12} />
+        <button className="evm-next-btn" onClick={() => setStep((step + 1) % evmSteps.length)} aria-label={lang === 'hi' ? 'अगला चरण' : 'Next Step'}>
+          {lang === 'hi' ? 'अगला' : 'Next Step'} <Play size={12} aria-hidden="true" />
         </button>
       </div>
     </div>
   );
+};
+
+EVMGuide.propTypes = {
+  t: PropTypes.object,
+  lang: PropTypes.string.isRequired
 };
 
 export default EVMGuide;

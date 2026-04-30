@@ -324,7 +324,7 @@ function App() {
       <header className="header" role="banner">
         <div className="container header-content">
           <div className="logo-section" aria-label="Election Assistant Logo">
-            <button className="home-btn" onClick={reset} title="Home"><Home size={18} /></button>
+            <button className="home-btn" onClick={reset} title="Home" aria-label="Go to Homepage"><Home size={18} aria-hidden="true" /></button>
             <div className="logo-badge"><Vote size={22} /></div>
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
           </div>
