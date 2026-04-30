@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { getNextElection } from '../data/statesData';
+import { translations } from '../data/translations';
 
 describe('Election Logic Tests', () => {
   it('should return the next upcoming election correctly', () => {
     const next = getNextElection();
     expect(next).toBeDefined();
-    expect(next.state).toBeDefined();
+    expect(next.name).toBeDefined();
     expect(new Date(next.date).getTime()).toBeGreaterThan(new Date().getTime());
   });
 

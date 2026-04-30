@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Sparkles, Send, Bot, User, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+/* eslint-disable no-unused-vars */
+import { motion } from 'framer-motion';
+/* eslint-enable no-unused-vars */
 
 const SmartExpert = ({ t, lang, userContext }) => {
   const [input, setInput] = useState('');

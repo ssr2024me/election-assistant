@@ -1,8 +1,10 @@
 import { useState } from 'react';
+/* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
+/* eslint-enable no-unused-vars */
 import { Info, Play } from 'lucide-react';
 
-const EVMGuide = ({ t, lang }) => {
+const EVMGuide = ({ lang }) => {
   const [step, setStep] = useState(0);
 
   const evmSteps = [

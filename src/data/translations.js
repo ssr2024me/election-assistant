@@ -103,10 +103,6 @@ export const translations = {
     kycApp: "Know Your Candidate",
     kycAppDesc: "View criminal antecedents and assets of candidates.",
     accessNow: "Access Now",
-    cvigilApp: "cVIGIL App",
-    cvigilAppDesc: "Report model code of conduct violations live.",
-    kycApp: "KYC App",
-    kycAppDesc: "Know your candidate's profile and criminal record.",
     visitECI: "Visit ECI Website",
   },
   hi: {
@@ -211,10 +207,6 @@ export const translations = {
     kycApp: "अपने उम्मीदवार को जानें",
     kycAppDesc: "उम्मीदवारों के आपराधिक इतिहास और संपत्ति की जानकारी देखें।",
     accessNow: "अभी उपयोग करें",
-    cvigilApp: "cVIGIL ऐप",
-    cvigilAppDesc: "आचार संहिता के उल्लंघन की लाइव रिपोर्ट करें।",
-    kycApp: "KYC ऐप",
-    kycAppDesc: "अपने उम्मीदवार की प्रोफाइल और रिकॉर्ड जानें।",
     visitECI: "ECI वेबसाइट पर जाएं",
   }
 };

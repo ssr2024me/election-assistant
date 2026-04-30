@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
+import PropTypes from 'prop-types';
+/* eslint-disable no-unused-vars */
 import { motion, AnimatePresence } from 'framer-motion';
+/* eslint-enable no-unused-vars */
 import { Vote, CheckCircle2, Globe, Search, Sparkles, ArrowRight, RefreshCcw, Calendar, HelpCircle, AlertTriangle, Shield, FileText, ChevronLeft, Languages, Sun, Moon, MapPin, Share2, Timer, Home, Phone, Smartphone, ShieldCheck, UserCheck, ExternalLink } from 'lucide-react';
 import './App.css';
 import { electionData } from './data/electionSteps';
@@ -13,7 +16,7 @@ import EVMGuide from './components/EVMGuide';
 // --- SUB-COMPONENTS (Modularized) ---
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.45 } }, exit: { opacity: 0, y: -16, transition: { duration: 0.25 } } };
 const stagger = { hidden: { opacity: 0, x: -16 }, show: (i) => ({ opacity: 1, x: 0, transition: { delay: i * 0.08, duration: 0.35 } }) };
-function Initial({ t, pick }) {
+const Initial = memo(function Initial({ t, pick }) {
   const countryLabels = [t.india, t.usa, t.other];
   return (
     <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
@@ -28,9 +31,9 @@ function Initial({ t, pick }) {
       </div>
     </motion.div>
   );
-}
+});
 
-function RegStatus({ t, pick, setStep, regLabels }) {
+const RegStatus = memo(function RegStatus({ t, pick, setStep, regLabels }) {
   return (
     <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="question-card">
       <Vote className="icon-main" size={44} strokeWidth={1.5} />
@@ -45,9 +48,9 @@ function RegStatus({ t, pick, setStep, regLabels }) {
       <button className="btn-ghost" onClick={() => setStep('initial')}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.changeCountry}</button>
     </motion.div>
   );
-}
+});
 
-function Guide({ t, lang, countryData, simpleMode, speak, reset, speaking }) {
+const Guide = memo(function Guide({ t, lang, countryData, simpleMode, speak, reset, speaking }) {
   const guide = countryData.registrationGuide;
   const allText = guide.map(s => lang === 'hi' && s.contentHi ? s.contentHi : s.content).join('. ');
   return (
@@ -82,9 +85,9 @@ function Guide({ t, lang, countryData, simpleMode, speak, reset, speaking }) {
       <div style={{ textAlign: 'center' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
     </motion.div>
   );
-}
+});
 
-function StatusCheck({ t, lang, countryData, reset }) {
+const StatusCheck = memo(function StatusCheck({ t, lang, countryData, reset }) {
   const d = countryData.checkStatus;
   return (
     <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="status-card">
@@ -95,9 +98,9 @@ function StatusCheck({ t, lang, countryData, reset }) {
       <button className="btn-ghost" onClick={reset}><ChevronLeft size={14} style={{ verticalAlign: 'middle' }} /> {t.backHome}</button>
     </motion.div>
   );
-}
+});
 
-function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, reset, userName, setUserName, showPledge, setShowPledge, handleShare, copied }) {
+const ReadyToVote = memo(function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, reset, userName, setUserName, showPledge, setShowPledge, handleShare, copied }) {
   const d = countryData.readyToVote;
   return (
     <motion.div variants={fade} initial="hidden" animate="show" exit="exit" className="ready-container">
@@ -208,7 +211,7 @@ function ReadyToVote({ t, lang, countryData, checked, toggle, speak, speaking, r
       <div style={{ textAlign: 'center', marginTop: '10px' }}><button className="btn-reset" onClick={reset}><RefreshCcw size={15} /> {t.startOver}</button></div>
     </motion.div>
   );
-}
+});
 
 // --- MAIN APP COMPONENT ---
 
@@ -227,7 +230,10 @@ function App() {
   const [showPledge, setShowPledge] = useState(false);
 
   const t = translations[lang];
-  useEffect(() => { setReady(true); }, []);
+  useEffect(() => { 
+    const timer = setTimeout(() => setReady(true), 10);
+    return () => clearTimeout(timer);
+  }, []);
   useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
 
   useEffect(() => {
@@ -284,7 +290,7 @@ function App() {
   const handleShare = async () => {
     const url = window.location.href;
     if (navigator.share) {
-      try { await navigator.share({ title: t.shareTitle, text: t.shareText, url }); } catch (e) { }
+      try { await navigator.share({ title: t.shareTitle, text: t.shareText, url }); } catch (error) { console.error(error); }
     } else {
       navigator.clipboard.writeText(url);
       setCopied(true);
@@ -321,14 +327,14 @@ function App() {
             <div className="logo-text">{t.logoTitle}<span className="logo-sub">{t.logoSub}</span></div>
           </div>
           <div className="header-actions">
-            <button className={`mode-toggle ${simpleMode ? 'active' : ''}`} onClick={() => setSimpleMode(!simpleMode)}>
-              <Sparkles size={14} /><span>{simpleMode ? t.simpleOn : t.explainSimply}</span>
+            <button className={`mode-toggle ${simpleMode ? 'active' : ''}`} onClick={() => setSimpleMode(!simpleMode)} aria-label={simpleMode ? t.simpleOn : t.explainSimply}>
+              <Sparkles size={14} aria-hidden="true" /><span>{simpleMode ? t.simpleOn : t.explainSimply}</span>
             </button>
-            <button className="lang-toggle" onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')}>
-              <Languages size={14} /><span>{t.langLabel}</span>
+            <button className="lang-toggle" onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')} aria-label={t.langLabel}>
+              <Languages size={14} aria-hidden="true" /><span>{t.langLabel}</span>
             </button>
-            <button className="theme-toggle" onClick={() => setTheme(th => th === 'dark' ? 'light' : 'dark')} title="Toggle Theme">
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            <button className="theme-toggle" onClick={() => setTheme(th => th === 'dark' ? 'light' : 'dark')} aria-label="Toggle Theme">
+              {theme === 'dark' ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -463,5 +469,11 @@ function App() {
     </div>
   );
 }
+
+Initial.propTypes = { t: PropTypes.object.isRequired, pick: PropTypes.func.isRequired };
+RegStatus.propTypes = { t: PropTypes.object.isRequired, pick: PropTypes.func.isRequired, setStep: PropTypes.func.isRequired, regLabels: PropTypes.array.isRequired };
+Guide.propTypes = { t: PropTypes.object.isRequired, lang: PropTypes.string.isRequired, countryData: PropTypes.object.isRequired, simpleMode: PropTypes.bool.isRequired, speak: PropTypes.func.isRequired, reset: PropTypes.func.isRequired, speaking: PropTypes.bool.isRequired };
+StatusCheck.propTypes = { t: PropTypes.object.isRequired, lang: PropTypes.string.isRequired, countryData: PropTypes.object.isRequired, reset: PropTypes.func.isRequired };
+ReadyToVote.propTypes = { t: PropTypes.object.isRequired, lang: PropTypes.string.isRequired, countryData: PropTypes.object.isRequired, checked: PropTypes.object.isRequired, toggle: PropTypes.func.isRequired, speak: PropTypes.func.isRequired, speaking: PropTypes.bool.isRequired, reset: PropTypes.func.isRequired, userName: PropTypes.string.isRequired, setUserName: PropTypes.func.isRequired, showPledge: PropTypes.bool.isRequired, setShowPledge: PropTypes.func.isRequired, handleShare: PropTypes.func.isRequired, copied: PropTypes.bool.isRequired };
 
 export default App;
